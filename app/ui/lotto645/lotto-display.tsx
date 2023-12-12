@@ -1,4 +1,4 @@
-import { fetchLatestLotto645DrawRaw } from "@/app/lib/lotto645data";
+import { fetchLatestLotto645DrawRaw } from "@/app/lib/lotto645/draw";
 
 export default async function LottoDisplay() {
   const draw = await fetchLatestLotto645DrawRaw();

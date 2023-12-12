@@ -4,11 +4,13 @@ export default async function seedArticleDb(client) {
   await client.query(`
 CREATE TABLE IF NOT EXISTS articles (
 id BIGSERIAL PRIMARY KEY,
-title VARCHAR(255) NOT NULL,
+board VARCHAR(20) NOT NULL,
+
 code VARCHAR(20) NOT NULL UNIQUE,
+title VARCHAR(100) NOT NULL,
 content TEXT NOT NULL,
 
-created_at TIMESTAMP DEFAULT NOW(),
+created_at TIMESTAMP NOT NULL,
 updated_at TIMESTAMP,
 
 author_ip_addr VARCHAR(40) NOT NULL,
@@ -63,8 +65,8 @@ author_password TEXT NOT NULL
 export async function seedArticles(client) {
   for (let artc of articles) {
     await client.query(`
-    INSERT INTO articles (title, code, content, author_ip_addr, author_nickname, author_password)
-    VALUES ($1, $2, $3, $4, $5, $6)
-    `, [artc.title, artc.code, artc.content, artc.author_ip_addr, artc.author_nickname, artc.author_password])
+    INSERT INTO articles (title, board, code, content, author_ip_addr, author_nickname, author_password, created_at)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    `, [artc.title, artc.board, artc.code, artc.content, artc.author_ip_addr, artc.author_nickname, artc.author_password, new Date()])
   }
 }
