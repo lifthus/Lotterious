@@ -21,17 +21,17 @@ export default async function LottoDisplay() {
       <div>
         <p className="text-xl font-semibold">
           {date.getFullYear()}년 {date.getMonth() + 1}월 {date.getDate()}일,{" "}
-          {diffDays}일 전 추첨 결과
+          {diffDays}일 전 {draw.draw}회 추첨 결과
         </p>
       </div>
-      <div className="flex">
+      <div className="flex items-center">
         <Ball number={draw.draw_no1} />
         <Ball number={draw.draw_no2} />
         <Ball number={draw.draw_no3} />
         <Ball number={draw.draw_no4} />
         <Ball number={draw.draw_no5} />
         <Ball number={draw.draw_no6} />
-        +
+        <p className="text-2xl">+</p>
         <Ball number={draw.bonus_no} />
       </div>
       <div className="text-right">
@@ -61,6 +61,39 @@ const Ball = ({ number }: { number: number }) => {
       className={`w-14 h-14 rounded-full ${bgColor} text-white flex justify-center items-center mr-1 text-2xl`}
     >
       {number}
+    </div>
+  );
+};
+
+export function LottoDisplaySkeleton() {
+  return (
+    <div className="flex flex-col bg-gray-300 rounded-2xl p-5">
+      <div>
+        <p className="text-xl font-semibold">&nbsp;</p>
+      </div>
+      <div className="flex items-center">
+        <BallSkeleton />
+        <BallSkeleton />
+        <BallSkeleton />
+        <BallSkeleton />
+        <BallSkeleton />
+        <BallSkeleton />
+        <p className="text-2xl">+</p>
+        <BallSkeleton />
+      </div>
+      <div className="text-right">
+        <p className="text-xl font-semibold">&nbsp;</p>
+      </div>
+    </div>
+  );
+}
+
+const BallSkeleton = () => {
+  return (
+    <div
+      className={`w-14 h-14 rounded-full bg-gray-400 text-white flex justify-center items-center mr-1 text-2xl`}
+    >
+      {" "}
     </div>
   );
 };

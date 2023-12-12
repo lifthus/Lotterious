@@ -1,9 +1,14 @@
-import LottoDisplay from "@/app/ui/lotto645/lotto-display";
+import LottoDisplay, {
+  LottoDisplaySkeleton,
+} from "@/app/ui/lotto645/lotto-display";
+import { Suspense } from "react";
 
 export default function Page() {
   return (
     <main className="flex min-h-screen flex-col items-center">
-      <LottoDisplay />
+      <Suspense fallback={<LottoDisplaySkeleton />}>
+        <LottoDisplay />
+      </Suspense>
     </main>
   );
 }
