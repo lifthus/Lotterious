@@ -1,5 +1,4 @@
 import pg from "pg";
-import { dropArticleDb } from "./db/db_article.mjs";
 const { Client } = pg;
 
 const client = new Client({
@@ -10,3 +9,15 @@ client.connect();
 await dropArticleDb(client);
 
 client.end();
+
+async function dropArticleDb(client) {
+  await client.query(`
+  DROP TABLE IF EXISTS comment_replies;
+  DROP TABLE IF EXISTS article_comments;
+  
+  DROP VIEW IF EXISTS article_likes_count;
+  DROP TABLE IF EXISTS article_likes;
+  DROP TABLE IF EXISTS articles;
+
+  `)
+}

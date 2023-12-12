@@ -67,7 +67,7 @@ const Ball = ({ number }: { number: number }) => {
 
 export function LottoDisplaySkeleton() {
   return (
-    <div className="flex flex-col bg-gray-300 rounded-2xl p-5">
+    <div className="flex flex-col bg-gray-200 rounded-2xl p-5">
       <div>
         <p className="text-xl font-semibold">&nbsp;</p>
       </div>
@@ -91,7 +91,7 @@ export function LottoDisplaySkeleton() {
 const BallSkeleton = () => {
   return (
     <div
-      className={`w-14 h-14 rounded-full bg-gray-400 text-white flex justify-center items-center mr-1 text-2xl`}
+      className={`w-14 h-14 rounded-full bg-gray-300 text-white flex justify-center items-center mr-1 text-2xl`}
     >
       {" "}
     </div>

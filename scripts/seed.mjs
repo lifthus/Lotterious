@@ -1,5 +1,5 @@
 import pg from "pg";
-import seedArticleDb from "./db/db_article.mjs";
+import seedArticleDb, { seedArticles } from "./db/db_article.mjs";
 
 const { Client } = pg;
 
@@ -8,6 +8,13 @@ const client = new Client({
 });
 client.connect();
 
+try {
+await client.query("BEGIN TRANSACTION");
 await seedArticleDb(client);
+await seedArticles(client);
+await client.query("COMMIT");
+} catch (e) {
+await client.query("ROLLBACK");
+}
 
 client.end();

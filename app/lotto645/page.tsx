@@ -1,3 +1,4 @@
+import ArticleBoard from "@/app/ui/lotto645/article-board";
 import LottoDisplay, {
   LottoDisplaySkeleton,
 } from "@/app/ui/lotto645/lotto-display";
@@ -9,6 +10,7 @@ export default function Page() {
       <Suspense fallback={<LottoDisplaySkeleton />}>
         <LottoDisplay />
       </Suspense>
+      <ArticleBoard />
     </main>
   );
 }

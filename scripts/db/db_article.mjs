@@ -1,10 +1,11 @@
+import { articles } from "./placeholder-article.mjs";
+
 export default async function seedArticleDb(client) {
-  try {
-  await client.query(`BEGIN TRANSACTION;`)
   await client.query(`
 CREATE TABLE IF NOT EXISTS articles (
 id BIGSERIAL PRIMARY KEY,
 title VARCHAR(255) NOT NULL,
+code VARCHAR(20) NOT NULL UNIQUE,
 content TEXT NOT NULL,
 
 created_at TIMESTAMP DEFAULT NOW(),
@@ -57,21 +58,13 @@ author_nickname VARCHAR(40) NOT NULL,
 author_password TEXT NOT NULL
 );
   `)
-  await client.query(`COMMIT;`)
-  } catch (err) {
-    console.error(err)
-    await client.query(`ROLLBACK;`)
-  }
 }
 
-export async function dropArticleDb(client) {
-  await client.query(`
-  DROP TABLE IF EXISTS comment_replies;
-  DROP TABLE IF EXISTS article_comments;
-  
-  DROP VIEW IF EXISTS article_likes_count;
-  DROP TABLE IF EXISTS article_likes;
-  DROP TABLE IF EXISTS articles;
-
-  `)
+export async function seedArticles(client) {
+  for (let artc of articles) {
+    await client.query(`
+    INSERT INTO articles (title, code, content, author_ip_addr, author_nickname, author_password)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    `, [artc.title, artc.code, artc.content, artc.author_ip_addr, artc.author_nickname, artc.author_password])
+  }
 }
