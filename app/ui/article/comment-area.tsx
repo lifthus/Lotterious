@@ -4,7 +4,7 @@ import { FullClientTime } from "@/app/ui/article/clientTime";
 import Form from "@/app/ui/article/create-comment-form";
 
 export default async function CommentArea({ slug }: { slug: string }) {
-  const code = getCodeFromSlug(slug);
+  const { code } = getCodeFromSlug(slug);
   const comments = await fetchComments(code);
   return (
     <div>
@@ -15,7 +15,7 @@ export default async function CommentArea({ slug }: { slug: string }) {
       <div>
         {comments.map((cmnt) => {
           return (
-            <div className="border-x-2 border-b-2">
+            <div className="border-x-2 border-b-2" key={cmnt.id}>
               <div className="flex items-center border-b-2 border-dotted px-2">
                 <div className="flex items-center mx-1">
                   by&nbsp;
