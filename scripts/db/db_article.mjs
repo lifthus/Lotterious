@@ -38,7 +38,7 @@ id BIGSERIAL PRIMARY KEY,
 article BIGINT REFERENCES articles(id) ON DELETE CASCADE,
 content TEXT NOT NULL,
 
-created_at TIMESTAMP DEFAULT NOW(),
+created_at TIMESTAMP NOT NULL,
 updated_at TIMESTAMP,
 
 author_ip_addr VARCHAR(40) NOT NULL,

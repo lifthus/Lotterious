@@ -1,6 +1,6 @@
 "use client";
 
-import { createArticle } from "@/app/lib/article/action";
+import { createArticle } from "@/app/lib/article/action-article";
 
 export default function Form({ board }: { board: string }) {
   return (

@@ -11,14 +11,16 @@ export default function Page() {
       <Suspense fallback={<LottoDisplaySkeleton />}>
         <LottoDisplay />
       </Suspense>
-      <div className="flex mb-1 mt-4 w-full">
-        <Link href="/lotto645/article/create" className="ml-auto">
-          <button className="bg-yellow-300 rounded-md px-2 text-lg border-dashed border-2 hover:bg-yellow-200">
-            📝글쓰기
-          </button>
-        </Link>
+      <div>
+        <div className="flex mb-1 mt-4 w-full">
+          <Link href="/lotto645/article/create" className="ml-auto">
+            <button className="bg-yellow-300 rounded-md px-2 text-lg border-dashed border-2 hover:bg-yellow-200">
+              📝글쓰기
+            </button>
+          </Link>
+        </div>
+        <ArticleBoard board={"lotto645"} />
       </div>
-      <ArticleBoard board={"lotto645"} />
     </main>
   );
 }

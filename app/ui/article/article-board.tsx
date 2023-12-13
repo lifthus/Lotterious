@@ -7,19 +7,19 @@ export default async function ArticleBoard({ board }: { board: string }) {
   const today = new Date();
   return (
     <div className="flex flex-col">
-      <table className="border-collapse">
+      <table className="border-collapse w-[70vw]">
         <thead>
           <tr className="bg-gray-100">
-            <th className="p-2 rounded-tl-2xl whitespace-nowrap">제목</th>
-            <th className="p-2 whitespace-nowrap">닉네임</th>
-            <th className="p-2 rounded-tr-2xl whitespace-nowrap">작성일</th>
+            <th className="px-2 whitespace-nowrap">제목</th>
+            <th className="px-2 whitespace-nowrap">닉네임</th>
+            <th className="px-2 whitespace-nowrap">작성일</th>
           </tr>
         </thead>
         <tbody>
           {artcsOutline.map((ol) => {
             return (
               <tr className="border-t-2">
-                <td className="w-[30rem] pl-4">
+                <td className="pl-4 w-[70%]">
                   <Link
                     key={ol.code}
                     href={`/${board}/article/${ol.title + "code" + ol.code}`}
@@ -45,7 +45,7 @@ export default async function ArticleBoard({ board }: { board: string }) {
         </tbody>
         <tfoot>
           <tr className="bg-gray-100">
-            <td className="p-2 rounded-b-2xl text-center" colSpan={3}>
+            <td className="p-2 text-center" colSpan={3}>
               pagination
             </td>
           </tr>
