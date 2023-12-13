@@ -1,4 +1,4 @@
-import { fetchArticlesOutline } from "@/app/lib/article/article";
+import { fetchArticlesOutline } from "@/app/lib/article/fetch";
 import { ClientTime } from "@/app/ui/article/clientTime";
 import Link from "next/link";
 
@@ -6,14 +6,7 @@ export default async function ArticleBoard({ board }: { board: string }) {
   const artcsOutline = await fetchArticlesOutline(board);
   const today = new Date();
   return (
-    <div className="flex flex-col my-10">
-      <div className="text-right my-1">
-        <Link href="/lotto645/article/create">
-          <button className="bg-yellow-300 rounded-md px-2 text-lg border-dashed border-2 hover:bg-yellow-200">
-            📝글쓰기
-          </button>
-        </Link>
-      </div>
+    <div className="flex flex-col">
       <table className="border-collapse">
         <thead>
           <tr className="bg-gray-100">
@@ -40,7 +33,11 @@ export default async function ArticleBoard({ board }: { board: string }) {
                   <p className="text-xs text-gray-500">({ol.author_ip_addr})</p>
                 </td>
                 <td>
-                  <ClientTime today={today} date={ol.created_at} />
+                  <ClientTime
+                    className="flex text-xs whitespace-nowrap justify-center"
+                    today={today}
+                    date={ol.created_at}
+                  />
                 </td>
               </tr>
             );
