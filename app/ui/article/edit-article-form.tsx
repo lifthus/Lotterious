@@ -3,9 +3,11 @@
 import { editArticle } from "@/app/lib/article/action-article";
 import { Article } from "@/app/lib/article/fetch";
 import { useState } from "react";
+import { useFormStatus } from "react-dom";
 
 export default function Form({ article }: { article: Article }) {
   const [pw, setPw] = useState("");
+  const { pending } = useFormStatus();
   if (pw === "")
     return (
       <form
@@ -31,6 +33,7 @@ export default function Form({ article }: { article: Article }) {
             type="password"
             name="password"
             className="border-2 rounded-md m-2"
+            aria-disabled={pending}
           />
           <button
             type="submit"

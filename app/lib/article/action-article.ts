@@ -12,7 +12,7 @@ const FormSchema = z.object({
   board: z.string(),
   code: z.string(),
   nickname: z.string().min(1).max(10),
-  password: z.string().min(4).max(100),
+  password: z.string().min(1).max(100),
   title: z.string().min(1).max(50),
   content: z.string().min(1).max(5000),
   createdAt: z.string(),
@@ -67,4 +67,26 @@ export async function editArticle(prevPw: string, formData: FormData) {
   const encodedTitle = encodeURIComponent(title);
   revalidatePath(`/lotto645/article/${encodedTitle}code${code}`);
   redirect(`/lotto645/article/${encodedTitle}code${code}`);
+}
+
+const DeleteArticle = FormSchema.pick({ code: true, password: true });
+
+export async function deleteArticle(formData: FormData) {
+  const { code, password } = DeleteArticle.parse(
+    Object.fromEntries(formData.entries())
+  );
+
+  const artcData = await pg.query(
+    `SELECT author_password FROM articles WHERE code=$1`,
+    [code]
+  );
+  const artc = artcData.rows[0];
+
+  if (artc.author_password !== password) {
+    throw new Error("비밀번호가 일치하지 않습니다.");
+  }
+
+  await pg.query(`DELETE FROM articles WHERE code=$1`, [code]);
+
+  redirect("/lotto645");
 }
