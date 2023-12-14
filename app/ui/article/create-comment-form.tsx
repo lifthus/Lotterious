@@ -2,11 +2,11 @@
 
 import { createComment } from "@/app/lib/article/action-comment";
 
-export default function Form({ slug }: { slug: string }) {
+export default function Form({ code }: { code: string }) {
   return (
     <div>
       <form action={createComment}>
-        <input type="hidden" name="slug" value={slug} />
+        <input type="hidden" name="code" value={code} />
         <div className="flex bg-gray-100 p-2 items-center">
           <label htmlFor="comment_nickname" className="font-semibold text-sm">
             닉네임

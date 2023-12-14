@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 const FormSchema = z.object({
-  slug: z.string(),
+  code: z.string(),
   nickname: z.string().min(1).max(10),
   password: z.string().min(4).max(100),
   content: z.string().min(1).max(250),
@@ -18,15 +18,14 @@ const FormSchema = z.object({
 const CreateComment = FormSchema.omit({ createdAt: true });
 
 export async function createComment(formData: FormData) {
-  const { slug, nickname, password, content } = CreateComment.parse(
+  const { code, nickname, password, content } = CreateComment.parse(
     Object.fromEntries(formData.entries())
   );
 
-  const code = getCodeFromSlug(slug);
-
-  const artcData = await pg.query(`SELECT id FROM articles WHERE code = $1`, [
-    code,
-  ]);
+  const artcData = await pg.query(
+    `SELECT id, title FROM articles WHERE code = $1`,
+    [code]
+  );
   const artcId = artcData.rows[0].id;
 
   const ipAddr = headers().get("x-forwarded-for");
@@ -39,6 +38,8 @@ export async function createComment(formData: FormData) {
     [artcId, content, new Date(), nickname, password, ipAddr]
   );
 
-  revalidatePath(`/lotto645/article/${slug}`);
-  redirect(`/lotto645/article/${slug}`);
+  const title = encodeURIComponent(artcData.rows[0].title);
+
+  revalidatePath(`/lotto645/article/${title}code${code}`);
+  redirect(`/lotto645/article/${title}code${code}`);
 }

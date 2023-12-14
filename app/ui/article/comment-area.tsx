@@ -3,15 +3,15 @@ import { getCodeFromSlug } from "@/app/lib/article/slug";
 import { FullClientTime } from "@/app/ui/article/clientTime";
 import Form from "@/app/ui/article/create-comment-form";
 
-export default async function CommentArea({ slug }: { slug: string }) {
-  const { code } = getCodeFromSlug(slug);
+export default async function CommentArea({ code }: { code: string }) {
   const comments = await fetchComments(code);
   return (
     <div>
-      <div className="bg-gray-100 flex">
-        <p className="font-semibold p-2 pb-0">댓글</p>
+      <div className="bg-gray-100 flex p-2 pb-0">
+        <p className="font-semibold">댓글</p>
+        <p className="text-sm text-gray-500">{comments.length}</p>
       </div>
-      <Form slug={slug} />
+      <Form code={code} />
       <div>
         {comments.map((cmnt) => {
           return (

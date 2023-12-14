@@ -43,7 +43,7 @@ export default async function Article({ slug }: { slug: string }) {
           </div>
         </div>
       </div>
-      <CommentArea slug={slug} />
+      <CommentArea code={code} />
     </div>
   );
 }
