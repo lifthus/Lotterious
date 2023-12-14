@@ -40,3 +40,31 @@ export async function createArticle(formData: FormData) {
   revalidatePath("/lotto645");
   redirect("/lotto645");
 }
+
+const EditArticle = FormSchema.omit({ board: true, createdAt: true });
+
+export async function editArticle(prevPw: string, formData: FormData) {
+  const { code, nickname, password, title, content } = EditArticle.parse(
+    Object.fromEntries(formData.entries())
+  );
+
+  const articleData = await pg.query(`SELECT * FROM articles WHERE code = $1`, [
+    code,
+  ]);
+  const article = articleData.rows[0];
+
+  if (article.author_password !== prevPw) {
+    throw new Error("비밀번호가 일치하지 않습니다.");
+  }
+
+  await pg.query(
+    `
+  UPDATE articles SET title=$1, content=$2, author_nickname=$3, author_password=$4 WHERE code=$5
+  `,
+    [title, content, nickname, password, code]
+  );
+
+  const encodedTitle = encodeURIComponent(title);
+  revalidatePath(`/lotto645/article/${encodedTitle}code${code}`);
+  redirect(`/lotto645/article/${encodedTitle}code${code}`);
+}

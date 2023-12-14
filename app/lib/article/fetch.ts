@@ -1,7 +1,7 @@
 import { cutIPAddr } from "@/app/lib/article/ip-addr";
 import { pg } from "@/db/pool";
 
-type ArticleOutline = {
+export type ArticleOutline = {
   title: string;
   code: string;
   created_at: Date;
@@ -28,7 +28,8 @@ export async function fetchArticlesOutline(
   });
 }
 
-type Article = {
+export type Article = {
+  board: string;
   title: string;
   code: string;
   created_at: Date;
@@ -37,10 +38,10 @@ type Article = {
   content: string;
 };
 
-export async function fetchArticle(code: string): Promise<Article> {
+export async function fetchArticleByCode(code: string): Promise<Article> {
   const res = await pg.query(
     `
-    SELECT title, code, created_at, author_nickname, author_ip_addr, content
+    SELECT board, title, code, created_at, author_nickname, author_ip_addr, content
     FROM articles
     WHERE code=$1;
     `,
@@ -50,7 +51,7 @@ export async function fetchArticle(code: string): Promise<Article> {
   return res.rows[0];
 }
 
-type Comment = {
+export type Comment = {
   id: number;
   content: string;
   created_at: Date;

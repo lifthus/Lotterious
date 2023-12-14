@@ -1,4 +1,4 @@
-import { fetchArticle } from "@/app/lib/article/fetch";
+import { fetchArticleByCode } from "@/app/lib/article/fetch";
 import { getCodeFromSlug } from "@/app/lib/article/slug";
 import NotFound from "@/app/not-found";
 import { FullClientTime } from "@/app/ui/article/clientTime";
@@ -6,9 +6,8 @@ import CommentArea from "@/app/ui/article/comment-area";
 import Link from "next/link";
 
 export default async function Article({ slug }: { slug: string }) {
-  slug = decodeURIComponent(slug);
   const { code, title } = getCodeFromSlug(slug);
-  const artc = await fetchArticle(code);
+  const artc = await fetchArticleByCode(code);
   if (artc.title !== title) {
     return (
       <>
@@ -23,7 +22,7 @@ export default async function Article({ slug }: { slug: string }) {
         {artc.title}
       </h1>
       <div className="flex w-full items-center bg-gray-100 px-3">
-        <p>by {artc.author_nickname}</p>
+        by&nbsp;<p className="font-semibold">{artc.author_nickname}</p>
         <p className="text-xs text-gray-500">({artc.author_ip_addr})</p>{" "}
         <FullClientTime className="text-sm ml-auto" date={artc.created_at} />
       </div>
