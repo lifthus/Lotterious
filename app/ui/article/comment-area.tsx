@@ -11,7 +11,6 @@ export default async function CommentArea({ code }: { code: string }) {
         <p className="font-semibold">댓글</p>
         <p className="text-sm text-gray-500">{comments.length}</p>
       </div>
-      <Form code={code} />
       <div>
         {comments.map((cmnt) => {
           return (
@@ -35,6 +34,7 @@ export default async function CommentArea({ code }: { code: string }) {
             </div>
           );
         })}
+        <Form code={code} />
       </div>
     </div>
   );

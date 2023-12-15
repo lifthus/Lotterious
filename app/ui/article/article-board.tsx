@@ -1,10 +1,33 @@
-import { fetchArticlesOutline } from "@/app/lib/article/fetch";
+import {
+  fetchArticlesPages,
+  fetchFilteredArticlesOutline,
+} from "@/app/lib/article/fetch";
 import { ClientTime } from "@/app/ui/article/clientTime";
+import Pagination from "@/app/ui/article/pagination";
 import Link from "next/link";
 
-export default async function ArticleBoard({ board }: { board: string }) {
-  const artcsOutline = await fetchArticlesOutline(board);
+export default async function ArticleBoard({
+  board,
+  query,
+  currentPage,
+}: {
+  board: string;
+  query: string;
+  currentPage: number;
+}) {
+  const totalPages = await fetchArticlesPages(board, query);
+  const artcsOutline = await fetchFilteredArticlesOutline(
+    board,
+    query,
+    currentPage
+  );
   const today = new Date();
+
+  const searchParams = new URLSearchParams();
+  searchParams.set("query", query);
+  searchParams.set("page", currentPage.toString());
+  const queryString = searchParams.toString();
+
   return (
     <div className="flex flex-col">
       <table className="border-collapse w-[70vw]">
@@ -22,10 +45,17 @@ export default async function ArticleBoard({ board }: { board: string }) {
                 <td className="pl-4 w-[70%]">
                   <Link
                     key={ol.code}
-                    href={`/${board}/article/${ol.title + "code" + ol.code}`}
-                    className="hover:cursor-pointer w-full"
+                    href={`/${board}/article/${
+                      ol.title + "code" + ol.code
+                    }?${queryString}`}
+                    className="flex hover:cursor-pointer w-full items-center"
                   >
-                    <p className="w-full">{ol.title}</p>
+                    <p>{ol.title}</p>
+                    {ol.comment_count != 0 && (
+                      <p className="text-xs text-gray-500">
+                        [{ol.comment_count}]
+                      </p>
+                    )}
                   </Link>
                 </td>
                 <td className="flex items-center justify-center px-1 whitespace-nowrap">
@@ -46,7 +76,7 @@ export default async function ArticleBoard({ board }: { board: string }) {
         <tfoot>
           <tr className="bg-gray-100">
             <td className="p-2 text-center" colSpan={3}>
-              pagination
+              <Pagination totalPages={totalPages} />
             </td>
           </tr>
         </tfoot>

@@ -5,7 +5,13 @@ import LottoDisplay, {
 import Link from "next/link";
 import { Suspense } from "react";
 
-export default function Page() {
+export default function Page({
+  searchParams,
+}: {
+  searchParams: { query: string; page: string };
+}) {
+  const query = searchParams?.query || "";
+  const currentPage = Number(searchParams?.page) || 1;
   return (
     <main className="flex min-h-screen flex-col items-center">
       <Suspense fallback={<LottoDisplaySkeleton />}>
@@ -19,7 +25,11 @@ export default function Page() {
             </button>
           </Link>
         </div>
-        <ArticleBoard board={"lotto645"} />
+        <ArticleBoard
+          board={"lotto645"}
+          query={query}
+          currentPage={currentPage}
+        />
       </div>
     </main>
   );
