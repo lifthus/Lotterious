@@ -1,7 +1,7 @@
 import { cutIPAddr } from "@/app/lib/article/ip-addr";
 import { pg } from "@/db/pool";
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 10;
 
 export type ArticleOutline = {
   title: string;
