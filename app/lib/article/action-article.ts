@@ -11,23 +11,74 @@ import { redirect } from "next/navigation";
 const FormSchema = z.object({
   board: z.string(),
   code: z.string(),
-  nickname: z.string().min(1).max(10),
-  password: z.string().min(1).max(100),
-  title: z.string().min(1).max(50),
-  content: z.string().min(1).max(5000),
+  nickname: z
+    .string({
+      invalid_type_error: "닉네임을 입력해주세요.",
+    })
+    .min(1, { message: "닉네임은 한 글자 이상이어야 해요." })
+    .max(10, { message: "닉네임은 10글자 이하로 해주세요." }),
+  password: z
+    .string({
+      invalid_type_error: "비밀번호를 입력해주세요.",
+    })
+    .min(1, {
+      message: "비밀번호는 한 글자 이상이어야 해요.",
+    })
+    .max(100, {
+      message: "비밀번호는 100글자 이하로 해주세요.",
+    }),
+  title: z
+    .string({
+      invalid_type_error: "제목을 입력해주세요.",
+    })
+    .min(1, {
+      message: "제목은 한 글자 이상이어야 해요.",
+    })
+    .max(50, {
+      message: "제목은 50글자 이하로 해주세요.",
+    }),
+  content: z
+    .string({
+      invalid_type_error: "내용을 입력해주세요.",
+    })
+    .min(1, {
+      message: "내용은 한 글자 이상이어야 해요.",
+    })
+    .max(5000, {
+      message: "내용은 5000글자 이하로 해주세요.",
+    }),
   createdAt: z.string(),
 });
 
+export type State = {
+  errors?: {
+    nickname?: string[];
+    password?: string[];
+    title?: string[];
+    content?: string[];
+  };
+  message?: string | null;
+};
+
 const CreateArticle = FormSchema.omit({ code: true, createdAt: true });
 
-export async function createArticle(formData: FormData) {
-  // const rawFormData = Object.fromEntries(fromData.entires());
-  const { board, nickname, password, title, content } = CreateArticle.parse(
+export async function createArticle(
+  prevState: State,
+  formData: FormData
+): Promise<State> {
+  const validatedForm = CreateArticle.safeParse(
     Object.fromEntries(formData.entries())
   );
+  if (!validatedForm.success)
+    return {
+      errors: validatedForm.error.flatten().fieldErrors,
+      message: "필드 오류. 글 작성 실패.",
+    };
 
   const code = generateHexCode16();
   const ipAddr = headers().get("x-forwarded-for");
+
+  const { board, nickname, password, title, content } = validatedForm.data;
 
   try {
     await pg.query(
@@ -41,7 +92,7 @@ export async function createArticle(formData: FormData) {
     revalidatePath("/lotto645");
     redirect("/lotto645");
   } catch (e) {
-    return { message: "글 생성 실패" };
+    return { message: "글 작성 실패" };
   }
 }
 
