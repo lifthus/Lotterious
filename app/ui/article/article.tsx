@@ -4,17 +4,13 @@ import NotFound from "@/app/not-found";
 import { FullClientTime } from "@/app/ui/article/clientTime";
 import CommentArea from "@/app/ui/article/comment-area";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function Article({ slug }: { slug: string }) {
   const { code, title } = getCodeFromSlug(slug);
   const artc = await fetchArticleByCode(code);
-  if (artc.title !== title) {
-    return (
-      <>
-        <NotFound />
-        <br />
-      </>
-    );
+  if (!artc || artc.title !== title) {
+    return notFound();
   }
   return (
     <div className="w-[70vw]">

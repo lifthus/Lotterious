@@ -16,6 +16,7 @@ export default function Form({ code }: { code: string }) {
             id="comment_nickname"
             type="text"
             className="w-[7rem] mx-1 rounded-sm border-gray-200 border-2 px-2 text-sm"
+            required
           />
           <label htmlFor="comment_password" className="font-semibold text-sm">
             비밀번호
@@ -26,6 +27,7 @@ export default function Form({ code }: { code: string }) {
             type="password"
             className="w-[7rem] mx-1 rounded-sm border-gray-200 border-2 px-2 text-sm"
             placeholder="********"
+            required
           />
           <button
             type="submit"
@@ -39,6 +41,7 @@ export default function Form({ code }: { code: string }) {
             name="content"
             className="w-full border-2 border-gray-200 rounded-sm p-1 leading-4 text-sm"
             rows={3}
+            required
           />
         </div>
       </form>

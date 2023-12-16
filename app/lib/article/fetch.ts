@@ -57,7 +57,9 @@ export type Article = {
   content: string;
 };
 
-export async function fetchArticleByCode(code: string): Promise<Article> {
+export async function fetchArticleByCode(
+  code: string
+): Promise<Article | null> {
   try {
     const res = await pg.query(
       `
@@ -67,6 +69,9 @@ export async function fetchArticleByCode(code: string): Promise<Article> {
     `,
       [code]
     );
+
+    if (res.rows.length === 0) return null;
+
     res.rows[0].author_ip_addr = cutIPAddr(res.rows[0].author_ip_addr);
     return res.rows[0];
   } catch (e) {

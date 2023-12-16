@@ -16,6 +16,7 @@ export default function Form({ board }: { board: string }) {
             id="article-title"
             type="text"
             className="md:w-[35rem] border-2"
+            required
           />
         </div>
         <div className="flex mt-2">
@@ -30,6 +31,7 @@ export default function Form({ board }: { board: string }) {
             id="author-nickname"
             type="text"
             className="md:w-[5rem] border-2"
+            required
           />
           <label
             htmlFor="author-password"
@@ -42,6 +44,7 @@ export default function Form({ board }: { board: string }) {
             id="author-password"
             type="password"
             className="md:w-[5rem] border-2"
+            required
           />
         </div>
         <div className="mt-5">
@@ -50,6 +53,7 @@ export default function Form({ board }: { board: string }) {
             id="article-content"
             className="w-full border-2"
             rows={20}
+            required
           />
         </div>
         <div className="text-right">

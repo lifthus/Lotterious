@@ -4,7 +4,7 @@ import { deleteArticle } from "@/app/lib/article/action-article";
 import { getCodeFromSlug } from "@/app/lib/article/slug";
 import { useFormStatus } from "react-dom";
 
-export default async function Page({
+export default function Page({
   params: { slug },
 }: {
   params: { slug: string };

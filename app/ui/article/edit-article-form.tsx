@@ -34,6 +34,7 @@ export default function Form({ article }: { article: Article }) {
             name="password"
             className="border-2 rounded-md m-2"
             aria-disabled={pending}
+            required
           />
           <button
             type="submit"
@@ -62,6 +63,7 @@ export default function Form({ article }: { article: Article }) {
             className="md:w-[35rem] border-2"
             defaultValue={article.title}
             placeholder={article.title}
+            required
           />
         </div>
         <div className="flex mt-2">
@@ -77,6 +79,7 @@ export default function Form({ article }: { article: Article }) {
             type="text"
             className="md:w-[5rem] border-2"
             defaultValue={article.author_nickname}
+            required
           />
           <label
             htmlFor="author-password"
@@ -90,6 +93,7 @@ export default function Form({ article }: { article: Article }) {
             type="password"
             className="md:w-[5rem] border-2"
             defaultValue={pw}
+            required
           />
         </div>
         <div className="mt-5">
@@ -99,6 +103,7 @@ export default function Form({ article }: { article: Article }) {
             className="w-full border-2"
             rows={20}
             defaultValue={article.content}
+            required
           />
         </div>
         <div className="text-right">

@@ -41,10 +41,9 @@ export default async function ArticleBoard({
         <tbody>
           {artcsOutline.map((ol) => {
             return (
-              <tr className="border-t-2">
+              <tr className="border-t-2" key={ol.code}>
                 <td className="pl-4 w-[70%]">
                   <Link
-                    key={ol.code}
                     href={`/${board}/article/${
                       ol.title + "code" + ol.code
                     }?${queryString}`}
