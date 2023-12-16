@@ -28,12 +28,13 @@ export default function Form({ board }: { board: string }) {
           />
         </div>
         <div className="flex mt-2">
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center">
             {state.errors?.nickname &&
               state.errors.nickname.map((err: string) => (
                 <p className="text-red-500 text-sm">{err}&nbsp;</p>
               ))}
-            {state.errors?.password &&
+            {(!state.errors?.nickname || state.errors.nickname.length < 1) &&
+              state.errors?.password &&
               state.errors.password.map((err: string) => (
                 <p className="text-red-500 text-sm">{err}&nbsp;</p>
               ))}
