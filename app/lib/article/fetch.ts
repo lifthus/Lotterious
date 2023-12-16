@@ -18,8 +18,9 @@ export async function fetchFilteredArticlesOutline(
   page: number
 ): Promise<ArticleOutline[]> {
   const offset = (page - 1) * ITEMS_PER_PAGE;
-  const res = await pg.query(
-    `
+  try {
+    const res = await pg.query(
+      `
     SELECT 
     articles.title, 
     articles.code, 
@@ -34,13 +35,16 @@ export async function fetchFilteredArticlesOutline(
     ORDER BY articles.created_at DESC
     LIMIT $3 OFFSET $4;
     `,
-    [board, `%${query}%`, ITEMS_PER_PAGE, offset]
-  );
-  return res.rows.map((ol) => {
-    let author_ip_addr = ol.author_ip_addr;
-    author_ip_addr = cutIPAddr(author_ip_addr);
-    return { ...ol, author_ip_addr };
-  });
+      [board, `%${query}%`, ITEMS_PER_PAGE, offset]
+    );
+    return res.rows.map((ol) => {
+      let author_ip_addr = ol.author_ip_addr;
+      author_ip_addr = cutIPAddr(author_ip_addr);
+      return { ...ol, author_ip_addr };
+    });
+  } catch (e) {
+    throw new Error("Failed to fetch articles outline");
+  }
 }
 
 export type Article = {
@@ -54,16 +58,20 @@ export type Article = {
 };
 
 export async function fetchArticleByCode(code: string): Promise<Article> {
-  const res = await pg.query(
-    `
+  try {
+    const res = await pg.query(
+      `
     SELECT board, title, code, created_at, author_nickname, author_ip_addr, content
     FROM articles
     WHERE code=$1;
     `,
-    [code]
-  );
-  res.rows[0].author_ip_addr = cutIPAddr(res.rows[0].author_ip_addr);
-  return res.rows[0];
+      [code]
+    );
+    res.rows[0].author_ip_addr = cutIPAddr(res.rows[0].author_ip_addr);
+    return res.rows[0];
+  } catch (e) {
+    throw new Error("Failed to fetch article");
+  }
 }
 
 export type Comment = {
@@ -75,39 +83,47 @@ export type Comment = {
 };
 
 export async function fetchComments(code: string): Promise<Comment[]> {
-  const artcData = await pg.query(`SELECT id FROM articles WHERE code = $1`, [
-    code,
-  ]);
-  const artcId = artcData.rows[0].id;
+  try {
+    const artcData = await pg.query(`SELECT id FROM articles WHERE code = $1`, [
+      code,
+    ]);
+    const artcId = artcData.rows[0].id;
 
-  const res = await pg.query(
-    `
+    const res = await pg.query(
+      `
   SELECT id, content, created_at, author_nickname, author_ip_addr
   FROM article_comments
   WHERE article=$1
   ORDER BY created_at ASC;
   `,
-    [artcId]
-  );
+      [artcId]
+    );
 
-  return res.rows.map((comment) => {
-    return { ...comment, author_ip_addr: cutIPAddr(comment.author_ip_addr) };
-  });
+    return res.rows.map((comment) => {
+      return { ...comment, author_ip_addr: cutIPAddr(comment.author_ip_addr) };
+    });
+  } catch (e) {
+    throw new Error("Failed to fetch comments");
+  }
 }
 
 export async function fetchArticlesPages(
   board: string,
   query: string
 ): Promise<number> {
-  const count = await pg.query(
-    `
+  try {
+    const count = await pg.query(
+      `
   SELECT COUNT(*) FROM articles
   WHERE board=$1 AND (
     title ILIKE $2
   );`,
-    [board, `%${query}%`]
-  );
+      [board, `%${query}%`]
+    );
 
-  const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
-  return totalPages;
+    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (e) {
+    throw new Error("Failed to fetch articles pages");
+  }
 }

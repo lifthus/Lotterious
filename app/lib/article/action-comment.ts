@@ -22,24 +22,28 @@ export async function createComment(formData: FormData) {
     Object.fromEntries(formData.entries())
   );
 
-  const artcData = await pg.query(
-    `SELECT id, title FROM articles WHERE code = $1`,
-    [code]
-  );
-  const artcId = artcData.rows[0].id;
+  try {
+    const artcData = await pg.query(
+      `SELECT id, title FROM articles WHERE code = $1`,
+      [code]
+    );
+    const artcId = artcData.rows[0].id;
 
-  const ipAddr = headers().get("x-forwarded-for");
+    const ipAddr = headers().get("x-forwarded-for");
 
-  await pg.query(
-    `
+    await pg.query(
+      `
   INSERT INTO article_comments (article, content, created_at, author_nickname, author_password, author_ip_addr)
   VALUES ($1, $2, $3, $4, $5, $6)
   `,
-    [artcId, content, new Date(), nickname, password, ipAddr]
-  );
+      [artcId, content, new Date(), nickname, password, ipAddr]
+    );
 
-  const title = encodeURIComponent(artcData.rows[0].title);
+    const title = encodeURIComponent(artcData.rows[0].title);
 
-  revalidatePath(`/lotto645/article/${title}code${code}`);
-  redirect(`/lotto645/article/${title}code${code}`);
+    revalidatePath(`/lotto645/article/${title}code${code}`);
+    redirect(`/lotto645/article/${title}code${code}`);
+  } catch (e) {
+    return { message: "Failed to create comment" };
+  }
 }

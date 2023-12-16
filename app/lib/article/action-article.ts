@@ -29,16 +29,20 @@ export async function createArticle(formData: FormData) {
   const code = generateHexCode16();
   const ipAddr = headers().get("x-forwarded-for");
 
-  await pg.query(
-    `
+  try {
+    await pg.query(
+      `
     INSERT INTO articles (code, board, title, content, author_ip_addr, author_nickname, author_password, created_at)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     `,
-    [code, board, title, content, ipAddr, nickname, password, new Date()]
-  );
+      [code, board, title, content, ipAddr, nickname, password, new Date()]
+    );
 
-  revalidatePath("/lotto645");
-  redirect("/lotto645");
+    revalidatePath("/lotto645");
+    redirect("/lotto645");
+  } catch (e) {
+    return { message: "글 생성 실패" };
+  }
 }
 
 const EditArticle = FormSchema.omit({ board: true, createdAt: true });
@@ -54,19 +58,23 @@ export async function editArticle(prevPw: string, formData: FormData) {
   const article = articleData.rows[0];
 
   if (article.author_password !== prevPw) {
-    throw new Error("비밀번호가 일치하지 않습니다.");
+    return { message: "비밀번호가 일치하지 않습니다." };
   }
 
-  await pg.query(
-    `
+  try {
+    await pg.query(
+      `
   UPDATE articles SET title=$1, content=$2, author_nickname=$3, author_password=$4 WHERE code=$5
   `,
-    [title, content, nickname, password, code]
-  );
+      [title, content, nickname, password, code]
+    );
 
-  const encodedTitle = encodeURIComponent(title);
-  revalidatePath(`/lotto645/article/${encodedTitle}code${code}`);
-  redirect(`/lotto645/article/${encodedTitle}code${code}`);
+    const encodedTitle = encodeURIComponent(title);
+    revalidatePath(`/lotto645/article/${encodedTitle}code${code}`);
+    redirect(`/lotto645/article/${encodedTitle}code${code}`);
+  } catch (e) {
+    return { message: "글 수정 실패" };
+  }
 }
 
 const DeleteArticle = FormSchema.pick({ code: true, password: true });
@@ -76,17 +84,21 @@ export async function deleteArticle(formData: FormData) {
     Object.fromEntries(formData.entries())
   );
 
-  const artcData = await pg.query(
-    `SELECT author_password FROM articles WHERE code=$1`,
-    [code]
-  );
-  const artc = artcData.rows[0];
+  try {
+    const artcData = await pg.query(
+      `SELECT author_password FROM articles WHERE code=$1`,
+      [code]
+    );
+    const artc = artcData.rows[0];
 
-  if (artc.author_password !== password) {
-    throw new Error("비밀번호가 일치하지 않습니다.");
+    if (artc.author_password !== password) {
+      return { message: "비밀번호가 일치하지 않습니다." };
+    }
+
+    await pg.query(`DELETE FROM articles WHERE code=$1`, [code]);
+
+    redirect("/lotto645");
+  } catch (e) {
+    return { message: "글 삭제 실패" };
   }
-
-  await pg.query(`DELETE FROM articles WHERE code=$1`, [code]);
-
-  redirect("/lotto645");
 }
