@@ -33,18 +33,30 @@ export default function Form({ code }: { code: string }) {
           <div className="flex">
             {state.errors?.nickname &&
               state.errors.nickname.map((err) => {
-                return <p className="text-red-500 text-sm">{err}&nbsp;</p>;
+                return (
+                  <p key={err} className="text-red-500 text-sm">
+                    {err}&nbsp;
+                  </p>
+                );
               })}
             {(!state.errors?.nickname || state.errors.nickname.length < 1) &&
               state.errors?.password &&
               state.errors.password.map((err) => {
-                return <p className="text-red-500 text-sm">{err}&nbsp;</p>;
+                return (
+                  <p key={err} className="text-red-500 text-sm">
+                    {err}&nbsp;
+                  </p>
+                );
               })}
             {(!state.errors?.nickname || state.errors.nickname.length < 1) &&
               (!state.errors?.password || state.errors.password.length < 1) &&
               state.errors?.content &&
               state.errors.content.map((err) => {
-                return <p className="text-red-500 text-sm">{err}&nbsp;</p>;
+                return (
+                  <p key={err} className="text-red-500 text-sm">
+                    {err}&nbsp;
+                  </p>
+                );
               })}
           </div>
           <button

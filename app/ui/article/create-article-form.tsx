@@ -17,7 +17,9 @@ export default function Form({ board }: { board: string }) {
             </label>
             {state.errors?.title &&
               state.errors.title.map((err: string) => (
-                <p className="text-red-500 text-sm">{err}&nbsp;</p>
+                <p key={err} className="text-red-500 text-sm">
+                  {err}&nbsp;
+                </p>
               ))}
           </div>
           <input
@@ -31,12 +33,16 @@ export default function Form({ board }: { board: string }) {
           <div className="ml-auto flex items-center">
             {state.errors?.nickname &&
               state.errors.nickname.map((err: string) => (
-                <p className="text-red-500 text-sm">{err}&nbsp;</p>
+                <p key={err} className="text-red-500 text-sm">
+                  {err}&nbsp;
+                </p>
               ))}
             {(!state.errors?.nickname || state.errors.nickname.length < 1) &&
               state.errors?.password &&
               state.errors.password.map((err: string) => (
-                <p className="text-red-500 text-sm">{err}&nbsp;</p>
+                <p key={err} className="text-red-500 text-sm">
+                  {err}&nbsp;
+                </p>
               ))}
           </div>
           <label
@@ -75,7 +81,9 @@ export default function Form({ board }: { board: string }) {
         <div className="flex justify-end items-center">
           {state.errors?.content &&
             state.errors.content.map((err: string) => (
-              <p className="text-red-500 text-sm">{err}&nbsp;</p>
+              <p key={err} className="text-red-500 text-sm">
+                {err}&nbsp;
+              </p>
             ))}
           <button className="bg-yellow-200 px-4 py-1 border-2">✎ 작성</button>
         </div>
