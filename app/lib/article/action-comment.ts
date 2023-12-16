@@ -9,18 +9,44 @@ import { z } from "zod";
 
 const FormSchema = z.object({
   code: z.string(),
-  nickname: z.string().min(1).max(10),
-  password: z.string().min(4).max(100),
-  content: z.string().min(1).max(250),
+  nickname: z
+    .string({ invalid_type_error: "닉네임을 입력해주세요." })
+    .min(1, { message: "닉네임은 한 글자 이상이어야 해요." })
+    .max(10, { message: "닉네임은 10글자 이하로 해주세요." }),
+  password: z
+    .string({ invalid_type_error: "비밀번호를 입력해주세요." })
+    .min(1, { message: "비밀번호는 한 글자 이상이어야 해요." })
+    .max(100, { message: "비밀번호는 100글자 이하로 해주세요." }),
+  content: z
+    .string({ invalid_type_error: "내용을 입력해주세요." })
+    .min(1, { message: "내용은 한 글자 이상이어야 해요." })
+    .max(250, { message: "내용은 250글자 이하로 해주세요." }),
   createdAt: z.string(),
 });
 
+export type State = {
+  errors?: {
+    nickname?: string[];
+    password?: string[];
+    content?: string[];
+  };
+  message?: string | null;
+};
+
 const CreateComment = FormSchema.omit({ createdAt: true });
 
-export async function createComment(formData: FormData) {
-  const { code, nickname, password, content } = CreateComment.parse(
+export async function createComment(
+  state: State,
+  formData: FormData
+): Promise<State> {
+  const validatedForm = CreateComment.safeParse(
     Object.fromEntries(formData.entries())
   );
+
+  if (!validatedForm.success)
+    return { errors: validatedForm.error.flatten().fieldErrors };
+
+  const { code, nickname, password, content } = validatedForm.data;
 
   try {
     const artcData = await pg.query(
@@ -44,6 +70,6 @@ export async function createComment(formData: FormData) {
     revalidatePath(`/lotto645/article/${title}code${code}`);
     redirect(`/lotto645/article/${title}code${code}`);
   } catch (e) {
-    return { message: "Failed to create comment" };
+    return { message: "댓글 작성 실패" };
   }
 }
