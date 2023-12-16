@@ -1,3 +1,4 @@
+import { getCodeFromSlug } from "@/app/lib/article/slug";
 import Article from "@/app/ui/article/article";
 import ArticleBoard from "@/app/ui/article/article-board";
 
@@ -17,4 +18,15 @@ export default async function Page({
       <ArticleBoard board={"lotto645"} query={query} currentPage={page} />
     </main>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const { title } = getCodeFromSlug(decodeURIComponent(params.slug));
+  return {
+    title: title,
+  };
 }
