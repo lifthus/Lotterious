@@ -88,20 +88,28 @@ export async function createArticle(
     `,
       [code, board, title, content, ipAddr, nickname, password, new Date()]
     );
-
-    revalidatePath("/lotto645");
-    redirect("/lotto645");
   } catch (e) {
     return { message: "글 작성 실패" };
   }
+  revalidatePath("/lotto645");
+  redirect("/lotto645");
 }
 
 const EditArticle = FormSchema.omit({ board: true, createdAt: true });
 
-export async function editArticle(prevPw: string, formData: FormData) {
-  const { code, nickname, password, title, content } = EditArticle.parse(
+export async function editArticle(
+  prevPw: string,
+  state: State,
+  formData: FormData
+): Promise<State> {
+  const validatedForm = EditArticle.safeParse(
     Object.fromEntries(formData.entries())
   );
+
+  if (!validatedForm.success)
+    return { errors: validatedForm.error.flatten().fieldErrors };
+
+  const { code, nickname, password, title, content } = validatedForm.data;
 
   const articleData = await pg.query(`SELECT * FROM articles WHERE code = $1`, [
     code,
@@ -119,21 +127,16 @@ export async function editArticle(prevPw: string, formData: FormData) {
   `,
       [title, content, nickname, password, code]
     );
-
-    const encodedTitle = encodeURIComponent(title);
-    revalidatePath(`/lotto645/article/${encodedTitle}code${code}`);
-    redirect(`/lotto645/article/${encodedTitle}code${code}`);
   } catch (e) {
     return { message: "글 수정 실패" };
   }
+  const encodedTitle = encodeURIComponent(title);
+  revalidatePath(`/lotto645/article/${encodedTitle}code${code}`);
+  redirect(`/lotto645/article/${encodedTitle}code${code}`);
 }
 
-const DeleteArticle = FormSchema.pick({ code: true, password: true });
-
 export async function deleteArticle(formData: FormData) {
-  const { code, password } = DeleteArticle.parse(
-    Object.fromEntries(formData.entries())
-  );
+  const { code, password } = Object.fromEntries(formData.entries());
 
   try {
     const artcData = await pg.query(
@@ -147,9 +150,9 @@ export async function deleteArticle(formData: FormData) {
     }
 
     await pg.query(`DELETE FROM articles WHERE code=$1`, [code]);
-
-    redirect("/lotto645");
   } catch (e) {
     return { message: "글 삭제 실패" };
   }
+  revalidatePath("/lotto645");
+  redirect("/lotto645");
 }
