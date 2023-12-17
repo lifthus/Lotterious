@@ -26,12 +26,12 @@ export default async function Article({ slug }: { slug: string }) {
         {artc.content}
         <div className="grid grid-cols-3 justify-center items-center">
           <div className="col-start-3 col-end-4 justify-self-end">
-            <Link href={`/lotto645/article/${slug}/edit`}>
+            <Link href={`/lotto645/article/${encodeURIComponent(slug)}/edit`}>
               <button className="border-2 mx-1 rounded-md hover:bg-yellow-200">
                 ✎ 수정
               </button>
             </Link>
-            <Link href={`/lotto645/article/${slug}/delete`}>
+            <Link href={`/lotto645/article/${encodeURIComponent(slug)}/delete`}>
               <button className="border-2 mx-1 rounded-md hover:bg-red-400">
                 🗑 삭제
               </button>
