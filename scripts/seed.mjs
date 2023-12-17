@@ -11,7 +11,7 @@ client.connect();
 try {
 await client.query("BEGIN TRANSACTION");
 await seedArticleDb(client);
-await seedArticles(client);
+//await seedArticles(client);
 await client.query("COMMIT");
 } catch (e) {
 await client.query("ROLLBACK");
