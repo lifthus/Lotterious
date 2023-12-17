@@ -84,7 +84,8 @@ export class lotto645Generator {
     const chosenNumbers: Set<number> = new Set();
     let validated = false;
     let sortedChosenNumbers: number[] = [];
-    while (!validated) {
+    let validateCnt = 0;
+    while (!validated && validateCnt < 10) {
       while (chosenNumbers.size < 6) {
         const num = this.numBetween1to45();
         while (!chosenNumbers.has(num)) {
@@ -93,7 +94,11 @@ export class lotto645Generator {
       }
       sortedChosenNumbers = Array.from(chosenNumbers).sort((a, b) => a - b);
       validated = this.constraints.validate(sortedChosenNumbers);
+      validateCnt++;
       if (!validated) chosenNumbers.clear();
+    }
+    if (!validated) {
+      return [];
     }
     return sortedChosenNumbers;
   }
