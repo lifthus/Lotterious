@@ -45,7 +45,7 @@ export default async function ArticleBoard({
                 <td className="pl-4 w-[70%]">
                   <Link
                     href={`/${board}/article/${
-                      ol.title + "code" + ol.code
+                      encodeURIComponent(ol.title) + "code" + ol.code
                     }?${queryString}`}
                     className="flex hover:cursor-pointer w-full items-center"
                   >
