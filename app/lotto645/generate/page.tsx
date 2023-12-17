@@ -1,4 +1,5 @@
 import Lotto645Generator from "@/app/ui/lotto645/generator";
+import { Metadata } from "next";
 
 export default async function Page() {
   return (
@@ -9,3 +10,7 @@ export default async function Page() {
     </main>
   );
 }
+
+export const metadata: Metadata = {
+  title: "로또 번호 생성",
+};

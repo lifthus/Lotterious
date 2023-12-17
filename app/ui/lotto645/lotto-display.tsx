@@ -53,7 +53,7 @@ const Ball = ({ number }: { number: number }) => {
     bgColor = "bg-red-500";
   } else if (number < 40) {
     bgColor = "bg-gray-500";
-  } else if (number < 45) {
+  } else if (number < 46) {
     bgColor = "bg-green-500";
   }
   return (
