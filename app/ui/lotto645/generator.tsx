@@ -286,15 +286,15 @@ const Ball = ({ number }: { number?: number }) => {
   let bgColor = "bg-white";
   if (number === undefined) {
     bgColor = "bg-gray-300";
-  } else if (number < 10) {
+  } else if (number <= 10) {
     bgColor = "bg-yellow-500";
-  } else if (number < 20) {
+  } else if (number <= 20) {
     bgColor = "bg-blue-500";
-  } else if (number < 30) {
+  } else if (number <= 30) {
     bgColor = "bg-red-500";
-  } else if (number < 40) {
+  } else if (number <= 40) {
     bgColor = "bg-gray-500";
-  } else if (number < 46) {
+  } else if (number <= 45) {
     bgColor = "bg-green-500";
   }
   return (
@@ -333,15 +333,15 @@ const SmallBall = ({ number }: { number?: number }) => {
   let bgColor = "bg-white";
   if (number === undefined) {
     bgColor = "bg-gray-300";
-  } else if (number < 10) {
+  } else if (number <= 10) {
     bgColor = "bg-yellow-500";
-  } else if (number < 20) {
+  } else if (number <= 20) {
     bgColor = "bg-blue-500";
-  } else if (number < 30) {
+  } else if (number <= 30) {
     bgColor = "bg-red-500";
-  } else if (number < 40) {
+  } else if (number <= 40) {
     bgColor = "bg-gray-500";
-  } else if (number < 46) {
+  } else if (number <= 45) {
     bgColor = "bg-green-500";
   }
   return (

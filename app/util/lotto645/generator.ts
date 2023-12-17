@@ -41,7 +41,6 @@ export class lotto645Constraints {
       }
     }
     if (maxConsecCnt >= limit) {
-      console.log(nums, maxConsecCnt);
       return false;
     }
     return true;
@@ -92,7 +91,6 @@ export class lotto645Generator {
     this.excludeNumbers = exclude;
   }
   generate(): number[] {
-    console.log(this.includeNumbers);
     let validated = false;
     let sortedChosenNumbers: number[] = [];
     let validateCnt = 0;
