@@ -17,13 +17,13 @@ export default function Lotto645Generator() {
     useState(false);
 
   const constraints = useRef(new lotto645Constraints()).current;
+
+  const [include, setInclude] = useState<number[]>([]);
+  const [exclude, setExclude] = useState<number[]>([]);
+
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="flex flex-col space-y-2 bg-yellow-200 p-4 px-14 rounded-t-lg">
-        <div className="flex items-center">
-          <input type="checkbox" className="w-5 h-5 mr-2" disabled /> 역대 당첨
-          번호 제외
-        </div>
+      <div className="flex flex-col space-y-2 bg-yellow-200 p-4 px-14 rounded-t-lg w-[30rem]">
         {/* exclude consecutive numbers */}
         <div className="flex items-center">
           <input
@@ -165,8 +165,73 @@ export default function Lotto645Generator() {
           />
           개 이상 몰린 수 제외
         </div>
+        <NumberSelector setInclude={setInclude} setExclude={setExclude} />
       </div>
-      <NumbersGenerator constraints={constraints} include={[]} exclude={[]} />
+      <NumbersGenerator
+        constraints={constraints}
+        include={include}
+        exclude={exclude}
+      />
+    </div>
+  );
+}
+
+function NumberSelector({
+  setInclude,
+  setExclude,
+}: {
+  setInclude: (n: number[]) => void;
+  setExclude: (n: number[]) => void;
+}) {
+  const [numbers, setNumbers] = useState<(boolean | undefined)[]>(
+    new Array<boolean | undefined>(45).fill(undefined)
+  );
+  const getColor = (n: boolean | undefined): string => {
+    if (n === true) return "bg-green-400";
+    if (n === false) return "bg-gray-400";
+    return "bg-yellow-300 hover:bg-yellow-400";
+  };
+  const greenCnt = numbers.filter((n) => n).length;
+  return (
+    <div>
+      <div className="flex w-full justify-center items-center">
+        <div className="rounded-full bg-green-400 w-3 h-3 " />
+        <p className="text-sm mx-2">포함</p>
+        <div className="rounded-full bg-gray-400 w-3 h-3 " />
+        <p className="text-sm mx-2">제외</p>
+      </div>
+      {numbers.map((_, i) => {
+        return (
+          <button
+            key={`number ${i + 1}`}
+            className={`border-2 border-yellow-500 w-5 ml-1 mt-1 ${getColor(
+              numbers[i]
+            )}`}
+            onClick={() => {
+              if (numbers[i] === undefined && greenCnt < 6) numbers[i] = true;
+              else if (
+                numbers[i] === true ||
+                (numbers[i] === undefined && greenCnt > 5)
+              )
+                numbers[i] = false;
+              else numbers[i] = undefined;
+              setInclude(
+                numbers
+                  .map((n, i) => (n === true ? i + 1 : 0))
+                  .filter((n) => n !== 0)
+              );
+              setExclude(
+                numbers
+                  .map((n, i) => (n === false ? i + 1 : 0))
+                  .filter((n) => n !== 0)
+              );
+              setNumbers([...numbers]);
+            }}
+          >
+            {i + 1}
+          </button>
+        );
+      })}
     </div>
   );
 }

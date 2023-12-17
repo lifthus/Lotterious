@@ -1,5 +1,4 @@
 export class lotto645Constraints {
-  historicalNumbers: number[][] = [];
   excludeHistoricalNumbers: boolean = false;
 
   excludeConsecutiveNumbers: number | undefined = undefined;
@@ -8,13 +7,6 @@ export class lotto645Constraints {
     | { range: number | undefined; count: number | undefined }
     | undefined = undefined;
 
-  constructor(historicalNumbers: number[][] = []) {
-    this.historicalNumbers = [...historicalNumbers];
-  }
-
-  private validateHistoricalNumbers(nums: number[]): boolean {
-    return true;
-  }
   private validateConsecutiveNumbers(nums: number[]): boolean {
     if (this.excludeConsecutiveNumbers === undefined) return true;
     const limit = this.excludeConsecutiveNumbers;
@@ -79,7 +71,6 @@ export class lotto645Constraints {
   }
   validate(nums: number[]): boolean {
     return (
-      this.validateHistoricalNumbers(nums) &&
       this.validateConsecutiveNumbers(nums) &&
       this.validateConsecutiveMultiples(nums) &&
       this.validateNumbersInRanges(nums)
@@ -101,16 +92,17 @@ export class lotto645Generator {
     this.excludeNumbers = exclude;
   }
   generate(): number[] {
-    const chosenNumbers: Set<number> = new Set();
+    const chosenNumbers: Set<number> = new Set(this.includeNumbers);
     let validated = false;
     let sortedChosenNumbers: number[] = [];
     let validateCnt = 0;
     while (!validated && validateCnt < 10) {
-      while (chosenNumbers.size < 6) {
-        const num = this.numBetween1to45();
-        while (!chosenNumbers.has(num)) {
-          chosenNumbers.add(num);
-        }
+      let candidates = Array.from({ length: 45 }, (_, i) => i + 1);
+      candidates = candidates.filter((n) => !this.includeNumbers.includes(n));
+      candidates = candidates.filter((n) => !this.excludeNumbers.includes(n));
+      while (chosenNumbers.size < 6 && candidates.length > 0) {
+        const num = this.selectBetween(candidates);
+        chosenNumbers.add(num);
       }
       sortedChosenNumbers = Array.from(chosenNumbers).sort((a, b) => a - b);
       validated = this.constraints.validate(sortedChosenNumbers);
@@ -124,5 +116,9 @@ export class lotto645Generator {
   }
   numBetween1to45(): number {
     return Math.floor(Math.random() * 45) + 1;
+  }
+  selectBetween(nums: number[]): number {
+    const idx = Math.floor(Math.random() * nums.length);
+    return nums.splice(idx, 1)[0];
   }
 }
