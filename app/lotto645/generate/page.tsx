@@ -13,4 +13,5 @@ export default async function Page() {
 
 export const metadata: Metadata = {
   title: "로또 번호 생성",
+  description: "로또 6/45 번호 생성기",
 };
