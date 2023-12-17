@@ -71,7 +71,6 @@ export class lotto645Constraints {
           break;
         }
         if (r - l + 1 >= count) {
-          console.log(nums, l, r);
           return false;
         }
       }
