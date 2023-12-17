@@ -92,11 +92,12 @@ export class lotto645Generator {
     this.excludeNumbers = exclude;
   }
   generate(): number[] {
-    const chosenNumbers: Set<number> = new Set(this.includeNumbers);
+    console.log(this.includeNumbers);
     let validated = false;
     let sortedChosenNumbers: number[] = [];
     let validateCnt = 0;
     while (!validated && validateCnt < 50) {
+      const chosenNumbers: Set<number> = new Set(this.includeNumbers);
       let candidates = Array.from({ length: 45 }, (_, i) => i + 1);
       candidates = candidates.filter((n) => !this.includeNumbers.includes(n));
       candidates = candidates.filter((n) => !this.excludeNumbers.includes(n));
