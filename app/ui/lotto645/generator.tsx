@@ -1,84 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { set } from "zod";
+import { useRef, useState } from "react";
 
-type lottoNumbers = {
-  draw_no1: number;
-  draw_no2: number;
-  draw_no3: number;
-  draw_no4: number;
-  draw_no5: number;
-  draw_no6: number;
-};
-
-class lotto645Constraints {
-  historicalNumbers: lottoNumbers[] = [];
-  excludeHistoricalNumbersFlag: boolean = false;
-
-  excludeConsecutiveNumbersFlag: number | undefined = undefined;
-  excludeConsecutiveMultiples: number | undefined = undefined;
-  excludeNumbersInRanges:
-    | { min: number; max: number; count: number }
-    | undefined = undefined;
-
-  constructor(historicalNumbers: lottoNumbers[] = []) {
-    this.historicalNumbers = [...historicalNumbers];
-  }
-
-  private validateHistoricalNumbers(nums: lottoNumbers): boolean {
-    return false;
-  }
-  private validateConsecutiveNumbers(nums: lottoNumbers): boolean {
-    return false;
-  }
-  private validateConsecutiveMultiples(nums: lottoNumbers): boolean {
-    return false;
-  }
-  private validateNumbersInRanges(nums: lottoNumbers): boolean {
-    return false;
-  }
-  validate(nums: lottoNumbers): boolean {
-    return (
-      this.validateHistoricalNumbers(nums) &&
-      this.validateConsecutiveNumbers(nums) &&
-      this.validateConsecutiveMultiples(nums) &&
-      this.validateNumbersInRanges(nums)
-    );
-  }
-}
-
-class lotto645Generator {
-  private constraints: lotto645Constraints;
-  private includeNumbers: number[];
-  private excludeNumbers: number[];
-  constructor(
-    constraints: lotto645Constraints,
-    include: number[],
-    exclude: number[]
-  ) {
-    this.constraints = constraints;
-    this.includeNumbers = include;
-    this.excludeNumbers = exclude;
-  }
-  generate(): number[] {
-    const chosenNumbers: Set<number> = new Set();
-    while (chosenNumbers.size < 6) {
-      const num = this.numBetween1to45();
-      while (!chosenNumbers.has(num)) {
-        chosenNumbers.add(num);
-      }
-    }
-    const sortedChosenNumbers = Array.from(chosenNumbers).sort((a, b) => a - b);
-    return sortedChosenNumbers;
-  }
-  numBetween1to45(): number {
-    return Math.floor(Math.random() * 45) + 1;
-  }
-}
+import { lotto645Constraints, lotto645Generator } from "./generatorClass";
 
 export default function Lotto645Generator() {
-  const constraints = new lotto645Constraints();
+  const [excludeConsecutiveChecked, setExcludeConsecutiveChecked] =
+    useState(false);
+
+  const constraints = useRef(new lotto645Constraints()).current;
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="flex flex-col space-y-2 bg-yellow-200 p-4 px-14 rounded-t-lg">
@@ -86,16 +16,44 @@ export default function Lotto645Generator() {
           <input type="checkbox" className="w-5 h-5 mr-2" disabled />{" "}
           <p className="">역대 당첨 번호 제외</p>
         </div>
+        {/* exclude consecutive numbers */}
         <div className="flex items-center">
-          <input type="checkbox" className="w-5 h-5 mr-2" value="123" />
           <input
+            type="checkbox"
+            className="w-5 h-5 mr-2"
+            value="123"
+            onChange={(e) => {
+              if (!e.target.checked) {
+                setExcludeConsecutiveChecked(false);
+                constraints.excludeConsecutiveNumbers = undefined;
+                return;
+              }
+              setExcludeConsecutiveChecked(true);
+              const numInput = document.getElementsByName(
+                "excludeConsecutiveNumbers"
+              )[0] as HTMLInputElement;
+              const v = Number(numInput.value);
+              if (v >= 2 && v <= 6) constraints.excludeConsecutiveNumbers = v;
+              else constraints.excludeConsecutiveNumbers = undefined;
+            }}
+          />
+          <input
+            name="excludeConsecutiveNumbers"
             type="number"
             className="border w-10 text-center"
             min="2"
             max="6"
+            defaultValue="3"
+            onChange={(e) => {
+              const v = Number(e.target.value);
+              if (v >= 2 && v <= 6) constraints.excludeConsecutiveNumbers = v;
+              else constraints.excludeConsecutiveNumbers = undefined;
+            }}
+            disabled={!excludeConsecutiveChecked}
           />
           개 이상 연속하는 수 제외
         </div>
+        {/* exclude consecutive multiples */}
         <div className="flex items-center">
           <input type="checkbox" className="w-5 h-5 mr-2" />{" "}
           <input
@@ -106,6 +64,7 @@ export default function Lotto645Generator() {
           />
           개 이상 연속하는 배수 제외
         </div>
+        {/* exclude numbers in range */}
         <div className="flex items-center">
           <input type="checkbox" className="w-5 h-5 mr-2" /> 범위&nbsp;
           <input type="number" className="border w-10 text-center" />
