@@ -13,6 +13,8 @@ export default function Lotto645Generator() {
     excludeConsecutiveMultiplesChecked,
     setExcludeConsecutiveMultiplesChecked,
   ] = useState(false);
+  const [excloudeRangeNumbersChecked, setExcludeRangeNumbersChecked] =
+    useState(false);
 
   const constraints = useRef(new lotto645Constraints()).current;
   return (
@@ -106,11 +108,62 @@ export default function Lotto645Generator() {
         </div>
         {/* exclude numbers in range */}
         <div className="flex items-center">
-          <input type="checkbox" className="w-5 h-5 mr-2" /> 범위&nbsp;
-          <input type="number" className="border w-10 text-center" />
+          <input
+            type="checkbox"
+            className="w-5 h-5 mr-2"
+            onChange={(e) => {
+              if (!e.target.checked) {
+                setExcludeRangeNumbersChecked(false);
+                constraints.excludeNumbersInRanges = undefined;
+                return;
+              }
+              let rangeConfig = { range: 46, count: 7 };
+              setExcludeRangeNumbersChecked(true);
+              const rangeInput = document.getElementsByName(
+                "excludeRange"
+              )[0] as HTMLInputElement;
+              const numInput = document.getElementsByName(
+                "numbersInRange"
+              )[0] as HTMLInputElement;
+              const rangeV = Number(rangeInput.value);
+              const numV = Number(numInput.value);
+              constraints.excludeNumbersInRanges = {
+                range: rangeV === 0 ? undefined : rangeV,
+                count: numV === 0 ? undefined : numV,
+              };
+            }}
+          />{" "}
+          범위&nbsp;
+          <input
+            name="excludeRange"
+            type="number"
+            className="border w-10 text-center"
+            onChange={(e) => {
+              const v = Number(e.target.value);
+              if (!!constraints.excludeNumbersInRanges)
+                constraints.excludeNumbersInRanges.range =
+                  v > 0 ? v : undefined;
+            }}
+            min="0"
+            max="45"
+            disabled={!excloudeRangeNumbersChecked}
+          />
           &nbsp;내에&nbsp;
-          <input type="number" className="border w-10 text-center" />개 이상
-          몰린 수 제외
+          <input
+            name="numbersInRange"
+            type="number"
+            className="border w-10 text-center"
+            onChange={(e) => {
+              const v = Number(e.target.value);
+              if (!!constraints.excludeNumbersInRanges)
+                constraints.excludeNumbersInRanges.count =
+                  v > 0 ? v : undefined;
+            }}
+            min="0"
+            max="6"
+            disabled={!excloudeRangeNumbersChecked}
+          />
+          개 이상 몰린 수 제외
         </div>
       </div>
       <NumbersGenerator constraints={constraints} include={[]} exclude={[]} />

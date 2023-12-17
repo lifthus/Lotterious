@@ -5,7 +5,7 @@ export class lotto645Constraints {
   excludeConsecutiveNumbers: number | undefined = undefined;
   excludeConsecutiveMultiples: number | undefined = undefined;
   excludeNumbersInRanges:
-    | { min: number; max: number; count: number }
+    | { range: number | undefined; count: number | undefined }
     | undefined = undefined;
 
   constructor(historicalNumbers: number[][] = []) {
@@ -55,6 +55,27 @@ export class lotto645Constraints {
     return true;
   }
   private validateNumbersInRanges(nums: number[]): boolean {
+    if (
+      !this.excludeNumbersInRanges ||
+      !this.excludeNumbersInRanges.range ||
+      !this.excludeNumbersInRanges.count
+    )
+      return true;
+    const range = this.excludeNumbersInRanges.range;
+    const count = this.excludeNumbersInRanges.count;
+    let rp = 0;
+    for (let l = 0; l < 6; l++) {
+      for (let r = Math.max(l, rp); r < 6; r++) {
+        if (nums[r] - nums[l] + 1 > range) {
+          rp = r;
+          break;
+        }
+        if (r - l + 1 >= count) {
+          console.log(nums, l, r);
+          return false;
+        }
+      }
+    }
     return true;
   }
   validate(nums: number[]): boolean {
