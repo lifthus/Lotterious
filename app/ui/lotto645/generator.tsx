@@ -5,16 +5,22 @@ import { useRef, useState } from "react";
 import { lotto645Constraints, lotto645Generator } from "./generatorClass";
 
 export default function Lotto645Generator() {
-  const [excludeConsecutiveChecked, setExcludeConsecutiveChecked] =
-    useState(false);
+  const [
+    excludeConsecutiveNumbersChecked,
+    setExcludeConsecutiveNumbersChecked,
+  ] = useState(false);
+  const [
+    excludeConsecutiveMultiplesChecked,
+    setExcludeConsecutiveMultiplesChecked,
+  ] = useState(false);
 
   const constraints = useRef(new lotto645Constraints()).current;
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="flex flex-col space-y-2 bg-yellow-200 p-4 px-14 rounded-t-lg">
         <div className="flex items-center">
-          <input type="checkbox" className="w-5 h-5 mr-2" disabled />{" "}
-          <p className="">역대 당첨 번호 제외</p>
+          <input type="checkbox" className="w-5 h-5 mr-2" disabled /> 역대 당첨
+          번호 제외
         </div>
         {/* exclude consecutive numbers */}
         <div className="flex items-center">
@@ -24,11 +30,11 @@ export default function Lotto645Generator() {
             value="123"
             onChange={(e) => {
               if (!e.target.checked) {
-                setExcludeConsecutiveChecked(false);
+                setExcludeConsecutiveNumbersChecked(false);
                 constraints.excludeConsecutiveNumbers = undefined;
                 return;
               }
-              setExcludeConsecutiveChecked(true);
+              setExcludeConsecutiveNumbersChecked(true);
               const numInput = document.getElementsByName(
                 "excludeConsecutiveNumbers"
               )[0] as HTMLInputElement;
@@ -49,18 +55,52 @@ export default function Lotto645Generator() {
               if (v >= 2 && v <= 6) constraints.excludeConsecutiveNumbers = v;
               else constraints.excludeConsecutiveNumbers = undefined;
             }}
-            disabled={!excludeConsecutiveChecked}
+            onBlur={(e) => {
+              const v = Number(e.target.value);
+              if (v < 2 || v > 6) e.target.value = "";
+            }}
+            disabled={!excludeConsecutiveNumbersChecked}
           />
           개 이상 연속하는 수 제외
         </div>
         {/* exclude consecutive multiples */}
         <div className="flex items-center">
-          <input type="checkbox" className="w-5 h-5 mr-2" />{" "}
           <input
+            type="checkbox"
+            className="w-5 h-5 mr-2"
+            onChange={(e) => {
+              if (!e.target.checked) {
+                setExcludeConsecutiveMultiplesChecked(false);
+                constraints.excludeConsecutiveMultiples = undefined;
+                return;
+              }
+              setExcludeConsecutiveMultiplesChecked(true);
+              const numInput = document.getElementsByName(
+                "excludeConsecutiveMultiples"
+              )[0] as HTMLInputElement;
+              const v = Number(numInput.value);
+              if (v >= 2 && v <= 6) constraints.excludeConsecutiveMultiples = v;
+              else constraints.excludeConsecutiveMultiples = undefined;
+            }}
+          />{" "}
+          <input
+            name="excludeConsecutiveMultiples"
             type="number"
             className="border w-10 text-center"
             min="2"
             max="6"
+            onChange={(e) => {
+              const v = Number(e.target.value);
+              console.log(v);
+              if (v >= 2 && v <= 6) constraints.excludeConsecutiveMultiples = v;
+              else constraints.excludeConsecutiveMultiples = undefined;
+            }}
+            onBlur={(e) => {
+              const v = Number(e.target.value);
+              if (v < 2 || v > 6) e.target.value = "";
+            }}
+            disabled={!excludeConsecutiveMultiplesChecked}
+            defaultValue="3"
           />
           개 이상 연속하는 배수 제외
         </div>

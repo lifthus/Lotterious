@@ -32,6 +32,26 @@ export class lotto645Constraints {
     return true;
   }
   private validateConsecutiveMultiples(nums: number[]): boolean {
+    if (this.excludeConsecutiveMultiples === undefined) return true;
+    const limit = this.excludeConsecutiveMultiples;
+    let maxConsecCnt = 1;
+    for (let m = 2; m < 23; m++) {
+      let consecCnt = 1;
+      for (let i = 1; i < 6; i++) {
+        if (nums[i] % m !== 0 || nums[i - 1] % m !== 0) {
+          consecCnt = 1;
+          continue;
+        }
+        if (nums[i] / m === nums[i - 1] / m + 1) {
+          consecCnt++;
+          if (consecCnt > maxConsecCnt) maxConsecCnt = consecCnt;
+        } else consecCnt = 1;
+      }
+    }
+    if (maxConsecCnt >= limit) {
+      console.log(nums, maxConsecCnt);
+      return false;
+    }
     return true;
   }
   private validateNumbersInRanges(nums: number[]): boolean {
