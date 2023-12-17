@@ -96,7 +96,7 @@ export class lotto645Generator {
     let validated = false;
     let sortedChosenNumbers: number[] = [];
     let validateCnt = 0;
-    while (!validated && validateCnt < 10) {
+    while (!validated && validateCnt < 50) {
       let candidates = Array.from({ length: 45 }, (_, i) => i + 1);
       candidates = candidates.filter((n) => !this.includeNumbers.includes(n));
       candidates = candidates.filter((n) => !this.excludeNumbers.includes(n));
@@ -113,9 +113,6 @@ export class lotto645Generator {
       return [];
     }
     return sortedChosenNumbers;
-  }
-  numBetween1to45(): number {
-    return Math.floor(Math.random() * 45) + 1;
   }
   selectBetween(nums: number[]): number {
     const idx = Math.floor(Math.random() * nums.length);
