@@ -1,7 +1,9 @@
-import { fetchComments } from "@/app/lib/article/fetch";
-import { getCodeFromSlug } from "@/app/lib/article/slug";
+import { deleteComment } from "@/app/lib/article/action-comment";
+import { fetchComments } from "@/app/lib/article/fetch-comment";
 import { FullClientTime } from "@/app/ui/article/clientTime";
+import CommentDelete from "@/app/ui/article/comment-delete";
 import Form from "@/app/ui/article/create-comment-form";
+import FormButton from "@/app/ui/form-button";
 
 export default async function CommentArea({ code }: { code: string }) {
   const comments = await fetchComments(code);
@@ -26,9 +28,10 @@ export default async function CommentArea({ code }: { code: string }) {
                   </p>
                 </div>
                 <FullClientTime
-                  className="text-sm ml-auto"
+                  className="text-sm ml-auto mr-2"
                   date={cmnt.created_at}
                 />
+                <CommentDelete id={cmnt.id} />
               </div>
               <p className="text-sm px-2">{cmnt.content}</p>
             </div>

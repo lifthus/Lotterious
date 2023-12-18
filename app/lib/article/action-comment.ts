@@ -73,3 +73,33 @@ export async function createComment(
     return { message: "댓글 작성 실패" };
   }
 }
+
+export async function deleteComment(formData: FormData) {
+  const {
+    id,
+    password,
+    redirect: redirectURL,
+  } = Object.fromEntries(formData.entries());
+  try {
+    const commData = await pg.query(
+      `
+      SELECT article_comments.author_password
+      FROM article_comments
+      WHERE article_comments.id=$1
+      `,
+      [id]
+    );
+    const comm = commData.rows[0];
+
+    if (comm.author_password !== password) {
+      return { message: "비밀번호가 일치하지 않습니다." };
+    }
+
+    await pg.query(`DELETE FROM article_comments WHERE id=$1`, [id]);
+  } catch (e) {
+    console.log(e);
+    return { message: "댓글 삭제 실패" };
+  }
+  revalidatePath(redirectURL.toString());
+  redirect(redirectURL.toString());
+}

@@ -1,4 +1,4 @@
-import { fetchArticleByCode } from "@/app/lib/article/fetch";
+import { fetchArticleByCode } from "@/app/lib/article/fetch-article";
 import { getCodeFromSlug } from "@/app/lib/article/slug";
 import { FullClientTime } from "@/app/ui/article/clientTime";
 import CommentArea from "@/app/ui/article/comment-area";

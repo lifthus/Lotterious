@@ -1,7 +1,7 @@
 import {
   fetchArticlesPages,
   fetchFilteredArticlesOutline,
-} from "@/app/lib/article/fetch";
+} from "@/app/lib/article/fetch-article";
 import { ClientTime } from "@/app/ui/article/clientTime";
 import Pagination from "@/app/ui/article/pagination";
 import Link from "next/link";
