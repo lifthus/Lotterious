@@ -30,7 +30,7 @@ PRIMARY KEY (article, ip_addr)
   // article_like_counts
 await client.query(`
 CREATE OR REPLACE VIEW article_like_counts AS
-SELECT id as article, COUNT(article_likes.article) AS like_counts
+SELECT id as article, COUNT(article_likes.article) AS like_count
 FROM articles
 LEFT JOIN article_likes ON articles.id = article_likes.article
 GROUP BY articles.id
