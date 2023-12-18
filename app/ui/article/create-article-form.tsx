@@ -1,7 +1,8 @@
 "use client";
 
 import { createArticle } from "@/app/lib/article/action-article";
-import { useFormState } from "react-dom";
+import FormButton from "@/app/ui/form-button";
+import { useFormState, useFormStatus } from "react-dom";
 
 export default function Form({ board }: { board: string }) {
   const initialState = { errors: {}, message: null };
@@ -85,7 +86,9 @@ export default function Form({ board }: { board: string }) {
                 {err}&nbsp;
               </p>
             ))}
-          <button className="bg-yellow-200 px-4 py-1 border-2">✎ 작성</button>
+          <FormButton className="bg-yellow-200 px-4 py-1 border-2">
+            ✎ 작성
+          </FormButton>
         </div>
       </div>
     </form>

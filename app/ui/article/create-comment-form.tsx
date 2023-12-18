@@ -1,10 +1,12 @@
 "use client";
 
 import { createComment } from "@/app/lib/article/action-comment";
-import { useFormState } from "react-dom";
+import FormButton from "@/app/ui/form-button";
+import { useFormState, useFormStatus } from "react-dom";
 
 export default function Form({ code }: { code: string }) {
   const initialState = { errors: {}, message: null };
+  const { pending } = useFormStatus();
   const [state, dispatch] = useFormState(createComment, initialState);
   return (
     <div>
@@ -59,12 +61,9 @@ export default function Form({ code }: { code: string }) {
                 );
               })}
           </div>
-          <button
-            type="submit"
-            className="ml-auto bg-yellow-300 p-1 rounded-md border-2 hover:bg-yellow-200"
-          >
+          <FormButton className="ml-auto bg-yellow-300 p-1 rounded-md border-2 hover:bg-yellow-200">
             ✎ 작성
-          </button>
+          </FormButton>
         </div>
         <div className="p-1 bg-gray-100">
           <textarea

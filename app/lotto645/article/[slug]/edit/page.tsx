@@ -1,4 +1,4 @@
-import { fetchArticleByCode } from "@/app/lib/article/fetch";
+import { fetchArticleByCode } from "@/app/lib/article/fetch-article";
 import { getCodeFromSlug } from "@/app/lib/article/slug";
 import Form from "@/app/ui/article/edit-article-form";
 import { notFound } from "next/navigation";

@@ -1,7 +1,7 @@
 "use client";
 
 import { editArticle } from "@/app/lib/article/action-article";
-import { Article } from "@/app/lib/article/fetch";
+import { Article } from "@/app/lib/article/fetch-article";
 import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
