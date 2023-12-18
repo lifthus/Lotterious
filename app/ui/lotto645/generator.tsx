@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import {
   lotto645Constraints,
   lotto645Generator,
-} from "../../util/lotto645/generator";
+} from "../../model/lotto645/generator";
 
 export default function Lotto645Generator() {
   const [
