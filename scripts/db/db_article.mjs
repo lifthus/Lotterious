@@ -31,7 +31,13 @@ SELECT article, COUNT(*) AS likes_count
 FROM article_likes
 GROUP BY article
   `)
-
+await client.query(`
+CREATE OR REPLACE VIEW article_like_counts AS
+SELECT id as article, COUNT(article_likes.article) AS likes_count
+FROM articles
+LEFT JOIN article_likes ON articles.id = article_likes.article
+GROUP BY articles.id
+`)
   await client.query(`
 CREATE TABLE IF NOT EXISTS article_comments (
 id BIGSERIAL PRIMARY KEY,
