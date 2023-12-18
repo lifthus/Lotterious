@@ -37,6 +37,7 @@ export async function fetchFilteredArticlesOutline(
     `,
       [board, `%${query}%`, ITEMS_PER_PAGE, offset]
     );
+
     return res.rows.map((ol) => {
       let author_ip_addr = ol.author_ip_addr;
       author_ip_addr = cutIPAddr(author_ip_addr);

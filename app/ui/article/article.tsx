@@ -1,6 +1,5 @@
 import { fetchArticleByCode } from "@/app/lib/article/fetch";
 import { getCodeFromSlug } from "@/app/lib/article/slug";
-import NotFound from "@/app/not-found";
 import { FullClientTime } from "@/app/ui/article/clientTime";
 import CommentArea from "@/app/ui/article/comment-area";
 import Link from "next/link";
