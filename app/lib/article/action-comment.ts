@@ -97,7 +97,6 @@ export async function deleteComment(formData: FormData) {
 
     await pg.query(`DELETE FROM article_comments WHERE id=$1`, [id]);
   } catch (e) {
-    console.log(e);
     return { message: "댓글 삭제 실패" };
   }
   revalidatePath(redirectURL.toString());
