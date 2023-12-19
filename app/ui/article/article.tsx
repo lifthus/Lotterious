@@ -28,7 +28,7 @@ export default async function Article({ slug }: { slug: string }) {
           <div className="col-start-2 col-end-3 justify-self-center">
             <form>
               <FormButton className="border-2 p-2 bg-yellow-300 rounded-lg hover:bg-yellow-200">
-                🥎
+                <p className="text-gray-400">🥎 {artc.like_count}</p>
               </FormButton>
             </form>
           </div>
