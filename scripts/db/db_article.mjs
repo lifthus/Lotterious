@@ -66,15 +66,15 @@ author_nickname VARCHAR(40) NOT NULL,
 author_password TEXT NOT NULL
 );
   `)
-  // comment_counts
-  await client.query(`
-  CREATE OR REPLACE VIEW article_comment_counts AS
-  SELECT a.id as article, COUNT(c.id) + COUNT(r.id) AS whole_count, COUNT(r.id) AS reply_count
-  FROM articles as a
-  LEFT JOIN article_comments as c ON a.id = c.article
-  LEFT JOIN comment_replies as r ON c.id = r.comment
-  GROUP BY a.id
-  `)
+// comment_counts
+await client.query(`
+CREATE OR REPLACE VIEW article_comment_counts AS
+SELECT a.id as article, COUNT(c.id) + COUNT(r.id) AS whole_count, COUNT(r.id) AS reply_count
+FROM articles as a
+LEFT JOIN article_comments as c ON a.id = c.article
+LEFT JOIN comment_replies as r ON c.id = r.comment
+GROUP BY a.id
+`)
 }
 
 export async function seedArticles(client) {
