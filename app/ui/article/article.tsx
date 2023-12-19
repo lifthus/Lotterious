@@ -29,7 +29,7 @@ export default async function Article({ slug }: { slug: string }) {
           <div className="col-start-2 col-end-3 justify-self-center">
             <form action={likeArticle}>
               <input type="hidden" name="articleCode" value={artc.code} />
-              <FormButton className="border-2 p-2 bg-gray-200 rounded-lg hover:bg-gray-300">
+              <FormButton className="border-2 p-2 bg-gray-100 rounded-lg hover:bg-gray-200">
                 <p className="text-yellow-700">👍 {artc.like_count}</p>
               </FormButton>
             </form>
