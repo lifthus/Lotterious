@@ -10,6 +10,7 @@ export type ArticleOutline = {
   author_nickname: string;
   author_ip_addr: string;
   comment_count: number;
+  like_count: number;
 };
 
 export async function fetchFilteredArticlesOutline(
@@ -27,11 +28,12 @@ export async function fetchFilteredArticlesOutline(
     articles.created_at, 
     articles.author_nickname, 
     articles.author_ip_addr, 
-    count(article_comments.article) AS comment_count
+    acc.whole_count as comment_count,
+    alc.like_count as like_count
     FROM articles
-    LEFT JOIN article_comments ON articles.id = article_comments.article
+    JOIN article_comment_counts as acc ON articles.id=acc.article
+    JOIN article_like_counts as alc ON articles.id=alc.article
     WHERE board=$1 AND (articles.title ILIKE $2)
-    GROUP BY articles.id
     ORDER BY articles.created_at DESC
     LIMIT $3 OFFSET $4;
     `,
@@ -56,6 +58,7 @@ export type Article = {
   author_nickname: string;
   author_ip_addr: string;
   content: string;
+  like_count: number;
 };
 
 export async function fetchArticleByCode(
@@ -64,7 +67,8 @@ export async function fetchArticleByCode(
   try {
     const res = await pg.query(
       `
-    SELECT board, title, code, created_at, author_nickname, author_ip_addr, content
+    SELECT board, title, code, created_at, author_nickname, author_ip_addr, content,
+    (SELECT like_count FROM article_like_counts as alc WHERE alc.article=articles.id)
     FROM articles
     WHERE code=$1;
     `,

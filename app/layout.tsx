@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s | Lotterious",
     default: "Lotterious",
   },
-  description: "Lotterious, Gambling rather than working.",
+  description: "Lotterious, 로또는 내 삶의 희망..ㅠ",
 };
 
 export default function RootLayout({
