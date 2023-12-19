@@ -156,3 +156,26 @@ export async function deleteArticle(formData: FormData) {
   revalidatePath("/lotto645");
   redirect("/lotto645");
 }
+
+export async function likeArticle(formData: FormData) {
+  const { articleCode } = Object.fromEntries(formData.entries());
+  const ipAddr = headers().get("x-forwarded-for");
+  let title: string;
+  try {
+    const artcData = await pg.query(
+      `SELECT id,title FROM articles WHERE code=$1`,
+      [articleCode]
+    );
+    const artcId = artcData.rows[0].id;
+    title = artcData.rows[0].title;
+    await pg.query(
+      `
+    INSERT INTO article_likes (article, ip_addr) VALUES ($1, $2)
+    `,
+      [artcId, ipAddr]
+    );
+  } catch (e) {
+    return { message: "좋아요 실패" };
+  }
+  revalidatePath(`/lotto645`);
+}

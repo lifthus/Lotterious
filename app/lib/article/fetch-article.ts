@@ -10,7 +10,7 @@ export type ArticleOutline = {
   author_nickname: string;
   author_ip_addr: string;
   comment_count: number;
-  likes_count: number;
+  like_count: number;
 };
 
 export async function fetchFilteredArticlesOutline(
@@ -29,7 +29,7 @@ export async function fetchFilteredArticlesOutline(
     articles.author_nickname, 
     articles.author_ip_addr, 
     acc.whole_count as comment_count,
-    alc.like_count as likes_count
+    alc.like_count as like_count
     FROM articles
     JOIN article_comment_counts as acc ON articles.id=acc.article
     JOIN article_like_counts as alc ON articles.id=alc.article

@@ -1,3 +1,4 @@
+import { likeArticle } from "@/app/lib/article/action-article";
 import { fetchArticleByCode } from "@/app/lib/article/fetch-article";
 import { getCodeFromSlug } from "@/app/lib/article/slug";
 import { FullClientTime } from "@/app/ui/article/clientTime";
@@ -26,9 +27,10 @@ export default async function Article({ slug }: { slug: string }) {
         {artc.content}
         <div className="grid grid-cols-3 justify-center items-center mt-4">
           <div className="col-start-2 col-end-3 justify-self-center">
-            <form>
-              <FormButton className="border-2 p-2 bg-yellow-300 rounded-lg hover:bg-yellow-200">
-                <p className="text-gray-400">🥎 {artc.like_count}</p>
+            <form action={likeArticle}>
+              <input type="hidden" name="articleCode" value={artc.code} />
+              <FormButton className="border-2 p-2 bg-gray-200 rounded-lg hover:bg-gray-300">
+                <p className="text-yellow-700">👍 {artc.like_count}</p>
               </FormButton>
             </form>
           </div>

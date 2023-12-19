@@ -36,6 +36,7 @@ export default async function ArticleBoard({
             <th className="px-2 whitespace-nowrap">제목</th>
             <th className="px-2 whitespace-nowrap">닉네임</th>
             <th className="px-2 whitespace-nowrap">작성일</th>
+            <th className="px-2 whitespace-nowrap">추천</th>
           </tr>
         </thead>
         <tbody>
@@ -68,13 +69,16 @@ export default async function ArticleBoard({
                     date={ol.created_at}
                   />
                 </td>
+                <td className="flex items-center justify-center">
+                  <p className="text-sm text-gray-500">{ol.like_count}</p>
+                </td>
               </tr>
             );
           })}
         </tbody>
         <tfoot>
           <tr className="bg-gray-100">
-            <td className="p-2 text-center" colSpan={3}>
+            <td className="p-2 text-center" colSpan={4}>
               <Pagination totalPages={totalPages} />
             </td>
           </tr>
