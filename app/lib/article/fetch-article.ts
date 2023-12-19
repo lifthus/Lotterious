@@ -28,12 +28,12 @@ export async function fetchFilteredArticlesOutline(
     articles.created_at, 
     articles.author_nickname, 
     articles.author_ip_addr, 
-    count(article_comments.article) AS comment_count,
-    (SELECT like_count FROM article_like_counts as alc WHERE alc.article=articles.id)
+    acc.whole_count as comment_count,
+    alc.like_count as likes_count
     FROM articles
-    LEFT JOIN article_comments ON articles.id = article_comments.article
+    JOIN article_comment_counts as acc ON articles.id=acc.article
+    JOIN article_like_counts as alc ON articles.id=alc.article
     WHERE board=$1 AND (articles.title ILIKE $2)
-    GROUP BY articles.id
     ORDER BY articles.created_at DESC
     LIMIT $3 OFFSET $4;
     `,
