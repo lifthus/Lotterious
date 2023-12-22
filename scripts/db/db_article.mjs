@@ -1,6 +1,6 @@
 import { articles } from "./placeholder-article.mjs";
 
-export default async function seedArticleDb(client) {
+export default async function createArticleDb(client) {
   /* article */
   await client.query(`
 CREATE TABLE IF NOT EXISTS articles (
@@ -35,8 +35,10 @@ FROM articles
 LEFT JOIN article_likes ON articles.id = article_likes.article
 GROUP BY articles.id
 `)
+}
 
-/* comment */
+export async function createCommentDb(client) {
+  /* comment */
   await client.query(`
 CREATE TABLE IF NOT EXISTS article_comments (
 id BIGSERIAL PRIMARY KEY,
@@ -77,11 +79,6 @@ GROUP BY a.id
 `)
 }
 
-export async function seedArticles(client) {
-  for (let artc of articles) {
-    await client.query(`
-    INSERT INTO articles (title, board, code, content, author_ip_addr, author_nickname, author_password, created_at)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-    `, [artc.title, artc.board, artc.code, artc.content, artc.author_ip_addr, artc.author_nickname, artc.author_password, new Date()])
-  }
+export async function createArticleLotto645Db(client) {
+
 }

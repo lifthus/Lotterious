@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "create": "node -r dotenv/config ./scripts/create.mjs",
     "seed": "node -r dotenv/config ./scripts/seed.mjs",
     "drop": "node -r dotenv/config ./scripts/drop.mjs",
     "lotto": "node -r dotenv/config ./scripts/lotto645.mjs"
