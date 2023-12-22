@@ -1,6 +1,4 @@
-import { articles } from "./placeholder-article.mjs";
-
-export default async function createArticleDb(client) {
+export async function createArticleDb(client) {
   /* article */
   await client.query(`
 CREATE TABLE IF NOT EXISTS articles (
@@ -80,5 +78,18 @@ GROUP BY a.id
 }
 
 export async function createArticleLotto645Db(client) {
-
+  await client.query(`
+  CREATE TABLE IF NOT EXISTS article_lotto645 (
+    id BIGSERIAL PRIMARY KEY,
+    qrv TEXT NOT NULL,
+    article BIGINT REFERENCES articles(id) ON DELETE CASCADE,
+    draw INT NOT NULL,
+    draw_no1 INT NOT NULL,
+    draw_no2 INT NOT NULL,
+    draw_no3 INT NOT NULL,
+    draw_no4 INT NOT NULL,
+    draw_no5 INT NOT NULL,
+    draw_no6 INT NOT NULL,
+  )
+  `)
 }

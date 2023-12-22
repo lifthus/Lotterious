@@ -1,6 +1,6 @@
 import pg from "pg";
 
-import { createArticleDb, createCommentDb } from "./db/db_article.mjs";
+import { createArticleDb, createArticleLotto645Db, createCommentDb } from "./db/db_article.mjs";
 
 const { Client } = pg;
 
@@ -14,6 +14,7 @@ await client.query("BEGIN TRANSACTION");
 
 await createArticleDb(client);
 await createCommentDb(client);
+await createArticleLotto645Db(client);
 
 await client.query("COMMIT");
 } catch (e) {
