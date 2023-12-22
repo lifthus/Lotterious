@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "node -r dotenv/config ./scripts/seed.mjs",
-    "drop": "node -r dotenv/config ./scripts/drop.mjs"
+    "drop": "node -r dotenv/config ./scripts/drop.mjs",
+    "lotto": "node -r dotenv/config ./scripts/lotto645.mjs"
   },
   "dependencies": {
     "clsx": "^2.0.0",
