@@ -7,6 +7,7 @@ import { VerifiedLotto645Nums } from "@/app/ui/lotto645/verified-lotto";
 import Modal from "@/app/ui/modal";
 import { useState } from "react";
 import { useFormState } from "react-dom";
+import { useZxing } from "react-zxing";
 
 export default function Form({ board }: { board: string }) {
   const [verifyModalOpen, setVerifyModalOpen] = useState(false);
@@ -137,37 +138,29 @@ function VerifyLotto645({
   setQRURL: (url: string) => void;
   close: () => void;
 }) {
-  const [QR, setQR] = useState("");
+  const { ref } = useZxing({
+    async onDecodeResult(result) {
+      const res = await fetch("/lotto645/article/create/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          qr_url: result.getText(),
+        }),
+      });
+      if (res.status !== 200) return;
+
+      setLotto645(await res.json());
+      setQRURL(result.getText());
+      close();
+    },
+  });
+
   return (
     <div className="flex flex-col justify-center items-center bg-white p-10 border-2">
-      <input
-        type="text"
-        className="border-2 rounded-md"
-        value={QR}
-        onChange={(e) => setQR(e.target.value)}
-      />
-      <button
-        className="bg-yellow-200 border-2 rounded-md m-2"
-        onClick={async (e) => {
-          e.preventDefault();
-          const res = await fetch("/lotto645/article/create/verify", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              qr_url: QR,
-            }),
-          });
-          if (res.status !== 200) return alert("인증 실패");
-          setLotto645(await res.json());
-          setQRURL(QR);
-          setQR("");
-          close();
-        }}
-      >
-        인증
-      </button>
+      <p className="text-lg">로또 용지의 QR 코드를 보여주세요.</p>
+      <video ref={ref} className="p-2 rounded-3xl" />
     </div>
   );
 }
