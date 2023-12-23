@@ -28,7 +28,7 @@ await seed_lotto645_raw(client);
 client.end();
 
 async function seed_lotto645_raw(client) {
-  for (let i = 1095; i < 1099; i++) {
+  for (let i = 1099; i < 1100; i++) {
     if (i % 50 === 0) console.log(i, "회 조회 중...");
     let res;
     try {
