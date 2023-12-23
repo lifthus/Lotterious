@@ -13,6 +13,7 @@
     "lotto": "node -r dotenv/config ./scripts/lotto645.mjs"
   },
   "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
     "clsx": "^2.0.0",
     "dotenv": "^16.3.1",
     "next": "14.0.4",

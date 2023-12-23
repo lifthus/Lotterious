@@ -15,6 +15,8 @@ updated_at TIMESTAMP,
 author_ip_addr VARCHAR(40) NOT NULL,
 author_nickname VARCHAR(40) NOT NULL,
 author_password TEXT NOT NULL
+
+verified BOOLEAN NOT NULL DEFAULT FALSE
 );
   `);
   // article_likes
@@ -89,7 +91,7 @@ export async function createArticleLotto645Db(client) {
     draw_no3 INT NOT NULL,
     draw_no4 INT NOT NULL,
     draw_no5 INT NOT NULL,
-    draw_no6 INT NOT NULL,
-  )
+    draw_no6 INT NOT NULL
+  );
   `)
 }

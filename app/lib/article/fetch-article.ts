@@ -1,4 +1,5 @@
 import { cutIPAddr } from "@/app/lib/article/ip-addr";
+import { VerifiedLotto645 } from "@/app/lib/lotto645/verify";
 import { pg } from "@/db/pool";
 
 const ITEMS_PER_PAGE = 10;
@@ -11,6 +12,7 @@ export type ArticleOutline = {
   author_ip_addr: string;
   comment_count: number;
   like_count: number;
+  verified: boolean;
 };
 
 export async function fetchFilteredArticlesOutline(
@@ -28,6 +30,7 @@ export async function fetchFilteredArticlesOutline(
     articles.created_at, 
     articles.author_nickname, 
     articles.author_ip_addr, 
+    articles.verified,
     acc.whole_count as comment_count,
     alc.like_count as like_count
     FROM articles
@@ -59,26 +62,69 @@ export type Article = {
   author_ip_addr: string;
   content: string;
   like_count: number;
+
+  verifiedLotto645?: VerifiedLotto645;
 };
 
 export async function fetchArticleByCode(
   code: string
 ): Promise<Article | null> {
   try {
-    const res = await pg.query(
+    // first query the article.
+    const articleData = await pg.query(
       `
-    SELECT board, title, code, created_at, author_nickname, author_ip_addr, content,
+    SELECT id, board, title, code, created_at, author_nickname, author_ip_addr, content,
     (SELECT like_count FROM article_like_counts as alc WHERE alc.article=articles.id)
     FROM articles
     WHERE code=$1;
     `,
       [code]
     );
+    if (articleData.rows.length === 0) return null;
+    const article = articleData.rows[0];
 
-    if (res.rows.length === 0) return null;
+    // second query the lotto645 data related to the article.
+    const lotto645Data = await pg.query(
+      `SELECT * FROM article_lotto645 WHERE article=$1`,
+      [article.id]
+    );
+    // if exists, trim and provide the data.
+    if (lotto645Data.rows.length > 0) {
+      const drawOrd = lotto645Data.rows[0].draw;
+      const drawData = await pg.query(
+        `SELECT * FROM lotto645_raw WHERE draw=$1`,
+        [drawOrd]
+      );
+      const draw = drawData.rows[0];
+      const drawDate = draw.draw_date;
+      const drawNums = [
+        draw.draw_no1,
+        draw.draw_no2,
+        draw.draw_no3,
+        draw.draw_no4,
+        draw.draw_no5,
+        draw.draw_no6,
+        draw.bonus_no,
+      ];
+      const myNums = lotto645Data.rows.map((l) => [
+        l.draw_no1,
+        l.draw_no2,
+        l.draw_no3,
+        l.draw_no4,
+        l.draw_no5,
+        l.draw_no6,
+      ]);
 
-    res.rows[0].author_ip_addr = cutIPAddr(res.rows[0].author_ip_addr);
-    return res.rows[0];
+      article.verifiedLotto645 = {
+        draw: drawOrd,
+        drawDate,
+        drawNums,
+        myNums,
+      };
+    }
+
+    article.author_ip_addr = cutIPAddr(article.author_ip_addr);
+    return article;
   } catch (e) {
     throw new Error("Failed to fetch article");
   }
