@@ -150,6 +150,7 @@ export default function Lotto645Generator() {
             min="0"
             max="45"
             disabled={!excloudeRangeNumbersChecked}
+            defaultValue={"10"}
           />
           &nbsp;내에&nbsp;
           <input
@@ -165,6 +166,7 @@ export default function Lotto645Generator() {
             min="0"
             max="6"
             disabled={!excloudeRangeNumbersChecked}
+            defaultValue={"3"}
           />
           개 이상 몰린 수 제외
         </div>
