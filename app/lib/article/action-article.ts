@@ -7,6 +7,7 @@ import { z } from "zod";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getVFromQRURL, verifyLotto645V } from "@/app/lib/lotto645/verify";
 
 const FormSchema = z.object({
   board: z.string(),
@@ -60,7 +61,9 @@ export type State = {
   message?: string | null;
 };
 
-const CreateArticle = FormSchema.omit({ code: true, createdAt: true });
+const CreateArticle = FormSchema.omit({ code: true, createdAt: true }).merge(
+  z.object({ qr_url: z.string().optional() })
+);
 
 export async function createArticle(
   prevState: State,
@@ -78,17 +81,55 @@ export async function createArticle(
   const code = generateHexCode16();
   const ipAddr = headers().get("x-forwarded-for");
 
-  const { board, nickname, password, title, content } = validatedForm.data;
+  const { board, nickname, password, title, content, qr_url } =
+    validatedForm.data;
+
+  const qrv = !!qr_url ? getVFromQRURL(qr_url) : null;
 
   try {
+    pg.query(`BEGIN TRANSACTION`);
+
+    const verifiedLotto645 = !!qrv ? await verifyLotto645V(qrv) : null;
+
     await pg.query(
       `
-    INSERT INTO articles (code, board, title, content, author_ip_addr, author_nickname, author_password, created_at)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    INSERT INTO articles (code, board, title, content, author_ip_addr, author_nickname, author_password, created_at, verified)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
     `,
-      [code, board, title, content, ipAddr, nickname, password, new Date()]
+      [
+        code,
+        board,
+        title,
+        content,
+        ipAddr,
+        nickname,
+        password,
+        new Date(),
+        verifiedLotto645 !== null,
+      ]
     );
+
+    const artcId = (
+      await pg.query(`SELECT id FROM articles WHERE code=$1`, [code])
+    ).rows[0].id;
+
+    if (!!verifiedLotto645) {
+      const { draw, myNums } = verifiedLotto645;
+      for (let nums of myNums) {
+        await pg.query(
+          `
+        INSERT INTO article_lotto645 (qrv, article, draw, draw_no1, draw_no2, draw_no3, draw_no4, draw_no5, draw_no6)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        `,
+          [qrv, artcId, draw, ...nums]
+        );
+      }
+    }
+
+    await pg.query(`COMMIT`);
   } catch (e) {
+    console.log(e);
+    await pg.query(`ROLLBACK`);
     return { message: "글 작성 실패" };
   }
   revalidatePath("/lotto645");

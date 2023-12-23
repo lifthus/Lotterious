@@ -50,6 +50,9 @@ export default async function ArticleBoard({
                     }?${queryString}`}
                     className="flex hover:cursor-pointer w-full items-center"
                   >
+                    {ol.verified && (
+                      <p className="text-xs text-gray-400">[인증]</p>
+                    )}
                     <p>{ol.title}</p>
                     {ol.comment_count != 0 && (
                       <p className="text-xs text-gray-500">

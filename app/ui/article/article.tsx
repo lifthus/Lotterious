@@ -4,6 +4,7 @@ import { getCodeFromSlug } from "@/app/lib/article/slug";
 import { FullClientTime } from "@/app/ui/article/clientTime";
 import CommentArea from "@/app/ui/article/comment-area";
 import FormButton from "@/app/ui/form-button";
+import { VerifiedLotto645Nums } from "@/app/ui/lotto645/verified-lotto";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -18,10 +19,17 @@ export default async function Article({ slug }: { slug: string }) {
       <h1 className="text-3xl font-semibold w-full text-left p-2 rounded-t-lg border-2">
         {artc.title}
       </h1>
-      <div className="flex w-full items-center bg-gray-100 px-3">
-        by&nbsp;<p className="font-semibold">{artc.author_nickname}</p>
-        <p className="text-xs text-gray-500">({artc.author_ip_addr})</p>{" "}
-        <FullClientTime className="text-sm ml-auto" date={artc.created_at} />
+      <div className="flex flex-col bg-gray-100 items-center justify-center pb-3">
+        <div className="flex w-full items-center px-3">
+          by&nbsp;<p className="font-semibold">{artc.author_nickname}</p>
+          <p className="text-xs text-gray-500">({artc.author_ip_addr})</p>{" "}
+          <FullClientTime className="text-sm ml-auto" date={artc.created_at} />
+        </div>
+        <div>
+          {!!artc.verifiedLotto645 && (
+            <VerifiedLotto645Nums lotto645={artc.verifiedLotto645} />
+          )}
+        </div>
       </div>
       <div className="w-full p-2 border-x-2 border-dashed">
         {artc.content}
