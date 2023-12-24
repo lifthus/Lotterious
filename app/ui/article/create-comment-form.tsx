@@ -2,11 +2,10 @@
 
 import { createComment } from "@/app/lib/article/action-comment";
 import FormButton from "@/app/ui/form-button";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState } from "react-dom";
 
 export default function Form({ code }: { code: string }) {
   const initialState = { errors: {}, message: null };
-  const { pending } = useFormStatus();
   const [state, dispatch] = useFormState(createComment, initialState);
   return (
     <div>
