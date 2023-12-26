@@ -27,11 +27,15 @@ export function FullClientTime({
   className?: string;
   date: Date;
 }) {
-  const cn = className || "";
-  const cd = new Date(date);
-  const locStr = cd.toLocaleString(); // "1/2/2023, 12:34:56 AM" in local time zone
-  const y = locStr.split("/")[2].slice(0, 4);
-  const md = locStr.split("/").slice(0, 2).join("-");
-  const t = cd.toTimeString().slice(0, 8); // "01:23:45 GMT+... (...)" in local time zone
-  return <p className={cn}>{`${y}-${md} ${t}`}</p>;
+  try {
+    const cn = className || "";
+    const cd = new Date(date);
+    const locStr = cd.toLocaleString(); // "1/2/2023, 12:34:56 AM" in local time zone
+    const y = locStr.split("/")[2].slice(0, 4);
+    const md = locStr.split("/").slice(0, 2).join("-");
+    const t = cd.toTimeString().slice(0, 8); // "01:23:45 GMT+... (...)" in local time zone
+    return <p className={cn}>{`${y}-${md} ${t}`}</p>;
+  } catch (err) {
+    return <></>;
+  }
 }
