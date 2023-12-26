@@ -16,7 +16,6 @@ export default function Error({
   return (
     <main className="flex h-full flex-col items-center justify-center">
       <h2 className="text-center">무... 무언가 잘못된...</h2>
-      <>{error}</>
       <div>{error.message}</div>
       <button
         className="mt-4 rounded-md bg-yellow-400 px-4 py-2 text-sm text-white transition-colors hover:bg-yellow-300"
