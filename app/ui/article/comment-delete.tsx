@@ -29,9 +29,9 @@ export default function CommentDelete({ id }: { id: number }) {
             <div className="flex flex-col items-center justify-center">
               <input type="hidden" name="id" value={id} />
               <input type="hidden" name="redirect" value={redirectURL} />
-              <label htmlFor="password">비밀번호</label>
+              <label htmlFor={`comment-delete-password-${id}`}>비밀번호</label>
               <input
-                id="password"
+                id={`comment-delete-password-${id}`}
                 type="password"
                 name="password"
                 placeholder="********"
