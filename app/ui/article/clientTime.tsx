@@ -36,6 +36,10 @@ export function FullClientTime({
     const t = cd.toTimeString().slice(0, 8); // "01:23:45 GMT+... (...)" in local time zone
     return <p className={cn}>{`${y}-${md} ${t}`}</p>;
   } catch (err) {
-    return <></>;
+    return (
+      <div>
+        {date.toString()} {new Date(date).toLocaleString()}
+      </div>
+    );
   }
 }
