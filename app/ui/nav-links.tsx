@@ -47,7 +47,9 @@ export default function NavLinks() {
                 "flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:bg-yellow-100 hover:text-yellow-600 md:flex-none md:justify-start md:p-2 md:px-3",
                 { "bg-gray-100": pathname !== link.href },
                 {
-                  "bg-yellow-100 text-yellow-600": pathname === link.href,
+                  "bg-yellow-100 text-yellow-600": pathname.startsWith(
+                    link.href
+                  ),
                 }
               )}
             >
