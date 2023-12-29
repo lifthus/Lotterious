@@ -17,11 +17,13 @@ export default async function LottoDisplay() {
   if (weekday === 6 && hour >= 21) diffTillNextDraw = 7;
 
   return (
-    <div className="flex flex-col bg-yellow-300 rounded-2xl p-5">
-      <div>
-        <p className="text-xl font-semibold">
+    <div className="flex flex-col bg-yellow-300 rounded-2xl p-5 w-full md:w-auto">
+      <div className="md:flex">
+        <p className="text-lg md:text-xl font-semibold">
           {date.getFullYear()}년 {date.getMonth() + 1}월 {date.getDate()}일,{" "}
-          {diffDays}일 전 {draw.draw}회 추첨 결과
+        </p>
+        <p className="text-lg md:text-xl font-semibold">
+          &nbsp;{diffDays}일 전 {draw.draw}회 추첨 결과
         </p>
       </div>
       <div className="flex items-center">
@@ -35,7 +37,7 @@ export default async function LottoDisplay() {
         <Ball number={draw.bonus_no} />
       </div>
       <div className="text-right">
-        <p className="text-xl font-semibold">
+        <p className="text-lg md:text-xl font-semibold">
           다음 추첨 까지 {diffTillNextDraw}일!
         </p>
       </div>
@@ -58,7 +60,7 @@ const Ball = ({ number }: { number: number }) => {
   }
   return (
     <div
-      className={`w-14 h-14 rounded-full ${bgColor} text-white flex justify-center items-center mr-1 text-2xl`}
+      className={`md:w-14 md:h-14 w-8 h-8 rounded-full ${bgColor} text-white flex justify-center items-center mr-1 text-lg md:text-2xl`}
     >
       {number}
     </div>
@@ -91,7 +93,7 @@ export function LottoDisplaySkeleton() {
 const BallSkeleton = () => {
   return (
     <div
-      className={`w-14 h-14 rounded-full bg-gray-300 text-white flex justify-center items-center mr-1 text-2xl`}
+      className={`md:w-14 md:h-14 w-8 h-8 rounded-full bg-gray-300 text-white flex justify-center items-center mr-1 text-lg md:text-2xl`}
     >
       {" "}
     </div>
