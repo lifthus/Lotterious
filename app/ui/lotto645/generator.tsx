@@ -25,8 +25,8 @@ export default function Lotto645Generator() {
   const [exclude, setExclude] = useState<number[]>([]);
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="flex flex-col space-y-2 bg-yellow-200 p-4 px-14 rounded-t-lg w-[30rem]">
+    <div className="flex flex-col items-center justify-center text-sm">
+      <div className="flex flex-col space-y-2 bg-yellow-200 pb-4 pt-4 md:p-4 px-4 md:px-14 rounded-t-lg w-[90%] md:w-[30rem]">
         {/* exclude consecutive numbers */}
         <div className="flex items-center">
           <input
@@ -255,12 +255,12 @@ function NumbersGenerator({
   const [numHistory, setNumHistory] = useState<number[][]>([]);
   return (
     <div className="flex flex-col items-center">
-      <div className="flex space-x-1 items-center bg-yellow-300 rounded-3xl p-10">
+      <div className="flex space-x-1 items-center bg-yellow-300 rounded-3xl p-5 md:p-10">
         {[0, 1, 2, 3, 4, 5].map((n) => {
           return <Ball key={`ball ${n}`} number={numbers[n]} />;
         })}
         <button
-          className="bg-yellow-400 text-3xl text-white p-3 border-2 border-yellow-500 shadow-xl shadow-yellow-500 rounded-3xl"
+          className="bg-yellow-400 text-lg md:text-3xl text-white p-1 md:p-3 border-2 border-yellow-500 shadow-xl shadow-yellow-500 rounded-3xl"
           onClick={() => {
             if (numbers.length === 6)
               setNumHistory([[...numbers], ...numHistory]);
@@ -270,7 +270,7 @@ function NumbersGenerator({
           생성
         </button>
         <button
-          className="bg-gray-400 text-3xl text-white p-3 border-2 shadow-xl shadow-yellow-500 rounded-3xl"
+          className="bg-gray-400 text-lg md:text-3xl text-white p-1 md:p-3 border-2 shadow-xl shadow-yellow-500 rounded-3xl"
           onClick={() => {
             setNumHistory([]);
             setNumbers([]);
@@ -301,7 +301,7 @@ const Ball = ({ number }: { number?: number }) => {
   }
   return (
     <div
-      className={`w-8 h-8 md:w-14 md:h-14 rounded-full ${bgColor} text-white flex justify-center items-center mr-1 text-2xl`}
+      className={`w-10 h-10 md:w-14 md:h-14 rounded-full ${bgColor} text-white flex justify-center items-center mr-1 text-2xl`}
     >
       {!!number && number}
     </div>
