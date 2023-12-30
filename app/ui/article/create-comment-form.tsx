@@ -11,11 +11,8 @@ export default function Form({ code }: { code: string }) {
     <div>
       <form action={dispatch}>
         <input type="hidden" name="code" value={code} />
-        <div className="flex items-center p-2 bg-gray-100">
-          <label
-            htmlFor="comment_nickname"
-            className="hidden text-sm font-semibold md:block"
-          >
+        <div className="flex bg-gray-100 p-2 items-center">
+          <label htmlFor="comment_nickname" className="font-semibold text-sm">
             닉네임
           </label>
           <input
@@ -23,12 +20,8 @@ export default function Form({ code }: { code: string }) {
             id="comment_nickname"
             type="text"
             className="w-[7rem] mx-1 rounded-sm border-gray-200 border-2 px-2 text-sm"
-            placeholder="닉네임"
           />
-          <label
-            htmlFor="comment_password"
-            className="hidden text-sm font-semibold md:block"
-          >
+          <label htmlFor="comment_password" className="font-semibold text-sm">
             비밀번호
           </label>
           <input
@@ -42,7 +35,7 @@ export default function Form({ code }: { code: string }) {
             {state.errors?.nickname &&
               state.errors.nickname.map((err) => {
                 return (
-                  <p key={err} className="text-sm text-red-500">
+                  <p key={err} className="text-red-500 text-sm">
                     {err}&nbsp;
                   </p>
                 );
@@ -51,7 +44,7 @@ export default function Form({ code }: { code: string }) {
               state.errors?.password &&
               state.errors.password.map((err) => {
                 return (
-                  <p key={err} className="text-sm text-red-500">
+                  <p key={err} className="text-red-500 text-sm">
                     {err}&nbsp;
                   </p>
                 );
@@ -61,20 +54,20 @@ export default function Form({ code }: { code: string }) {
               state.errors?.content &&
               state.errors.content.map((err) => {
                 return (
-                  <p key={err} className="text-sm text-red-500">
+                  <p key={err} className="text-red-500 text-sm">
                     {err}&nbsp;
                   </p>
                 );
               })}
           </div>
-          <FormButton className="p-1 ml-auto bg-yellow-300 border-2 rounded-md hover:bg-yellow-200">
+          <FormButton className="ml-auto bg-yellow-300 p-1 rounded-md border-2 hover:bg-yellow-200">
             ✎ 작성
           </FormButton>
         </div>
         <div className="p-1 bg-gray-100">
           <textarea
             name="content"
-            className="w-full p-1 text-sm leading-4 border-2 border-gray-200 rounded-sm"
+            className="w-full border-2 border-gray-200 rounded-sm p-1 leading-4 text-sm"
             rows={3}
           />
         </div>

@@ -30,7 +30,7 @@ export default async function ArticleBoard({
 
   return (
     <div className="flex flex-col">
-      <table className="border-collapse w-[70vw] hidden md:block">
+      <table className="border-collapse w-[70vw]">
         <thead>
           <tr className="bg-gray-100">
             <th className="px-2 whitespace-nowrap">제목</th>
@@ -87,45 +87,6 @@ export default async function ArticleBoard({
           </tr>
         </tfoot>
       </table>
-      <div className="border-t-2 md:hidden">
-        {artcsOutline.map((ol) => {
-          return (
-            <Link
-              href={`/${board}/article/${
-                encodeURIComponent(ol.title) + "code" + ol.code
-              }?${queryString}`}
-              className="flex hover:cursor-pointer items-center"
-            >
-              <div className="border-b-2 w-[95vw]">
-                <div className="flex items-center pb-1">
-                  {ol.verified && (
-                    <p className="text-xs text-gray-400">[인증]</p>
-                  )}
-                  {ol.title}
-                  {ol.comment_count != 0 && (
-                    <p className="text-xs text-gray-500">
-                      [{ol.comment_count}]
-                    </p>
-                  )}
-                </div>
-                <div className="flex items-center">
-                  <p className="text-xs">{ol.author_nickname}</p>
-                  <p className="text-xs text-gray-400">({ol.author_ip_addr})</p>
-                  <p className="ml-auto text-xs">👍{ol.like_count}</p>
-                  <ClientTime
-                    className="flex text-xs whitespace-nowrap justify-center ml-2"
-                    today={today}
-                    date={ol.created_at}
-                  />
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-        <div className="flex w-full justify-center my-1">
-          <Pagination totalPages={totalPages} />
-        </div>
-      </div>
     </div>
   );
 }

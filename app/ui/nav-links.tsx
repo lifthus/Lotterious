@@ -37,6 +37,7 @@ export default function NavLinks() {
   const pathname = usePathname();
   const currentLink = links.find(({ href }) => pathname.startsWith(href));
   const mobileOneLinkWidth = Math.floor(100 / links.length);
+  console.log(mobileOneLinkWidth);
   return (
     <div className="w-full">
       <div className="flex md:flex-col">
