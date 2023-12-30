@@ -48,7 +48,7 @@ export default async function ArticleBoard({
                     href={`/${board}/article/${
                       encodeURIComponent(ol.title) + "code" + ol.code
                     }?${queryString}`}
-                    className="flex hover:cursor-pointer w-full items-center"
+                    className="flex items-center w-full hover:cursor-pointer"
                   >
                     {ol.verified && (
                       <p className="text-xs text-gray-400">[인증]</p>
@@ -67,7 +67,7 @@ export default async function ArticleBoard({
                 </td>
                 <td>
                   <ClientTime
-                    className="flex text-xs whitespace-nowrap justify-center"
+                    className="flex justify-center text-xs whitespace-nowrap"
                     today={today}
                     date={ol.created_at}
                   />
@@ -91,10 +91,11 @@ export default async function ArticleBoard({
         {artcsOutline.map((ol) => {
           return (
             <Link
+              key={ol.code}
               href={`/${board}/article/${
                 encodeURIComponent(ol.title) + "code" + ol.code
               }?${queryString}`}
-              className="flex hover:cursor-pointer items-center"
+              className="flex items-center hover:cursor-pointer"
             >
               <div className="border-b-2 w-[95vw]">
                 <div className="flex items-center pb-1">
@@ -113,7 +114,7 @@ export default async function ArticleBoard({
                   <p className="text-xs text-gray-400">({ol.author_ip_addr})</p>
                   <p className="ml-auto text-xs">👍{ol.like_count}</p>
                   <ClientTime
-                    className="flex text-xs whitespace-nowrap justify-center ml-2"
+                    className="flex justify-center ml-2 text-xs whitespace-nowrap"
                     today={today}
                     date={ol.created_at}
                   />
@@ -122,7 +123,7 @@ export default async function ArticleBoard({
             </Link>
           );
         })}
-        <div className="flex w-full justify-center my-1">
+        <div className="flex justify-center w-full my-1">
           <Pagination totalPages={totalPages} />
         </div>
       </div>
