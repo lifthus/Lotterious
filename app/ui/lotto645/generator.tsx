@@ -96,7 +96,6 @@ export default function Lotto645Generator() {
             max="6"
             onChange={(e) => {
               const v = Number(e.target.value);
-              console.log(v);
               if (v >= 2 && v <= 6) constraints.excludeConsecutiveMultiples = v;
               else constraints.excludeConsecutiveMultiples = undefined;
             }}
