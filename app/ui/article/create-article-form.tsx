@@ -20,7 +20,7 @@ export default function Form({ board }: { board: string }) {
   return (
     <form action={dispatch}>
       {QRURL !== "" && <input type="hidden" name="qr_url" value={QRURL} />}
-      <div className="rouned-md bg-gray-100 p-4">
+      <div className="w-[95vw] md:w-auto rouned-md bg-gray-100 p-4">
         <div className="text-lg flex flex-col">
           <input type="hidden" name="board" value={board} />
           <div className="flex items-center">
@@ -41,25 +41,27 @@ export default function Form({ board }: { board: string }) {
             className="md:w-[35rem] border-2"
           />
         </div>
-        <div className="flex mt-2">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setVerifyModalOpen(true);
-              setQRURL("");
-              setLotto645(null);
-            }}
-            className="bg-yellow-300 border-2 rounded-md px-1 hover:bg-yellow-200 text-gray-600"
-          >
-            인증하기
-          </button>
-          <Modal isOpen={verifyModalOpen} close={closeVerifyModal}>
-            <VerifyLotto645
-              setLotto645={setLotto645}
-              setQRURL={setQRURL}
-              close={closeVerifyModal}
-            />
-          </Modal>
+        <div className="md:flex mt-2">
+          <div>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setVerifyModalOpen(true);
+                setQRURL("");
+                setLotto645(null);
+              }}
+              className="bg-yellow-300 border-2 rounded-md px-1 hover:bg-yellow-200 text-gray-600"
+            >
+              인증하기
+            </button>
+            <Modal isOpen={verifyModalOpen} close={closeVerifyModal}>
+              <VerifyLotto645
+                setLotto645={setLotto645}
+                setQRURL={setQRURL}
+                close={closeVerifyModal}
+              />
+            </Modal>
+          </div>
           <div className="ml-auto flex items-center">
             {state.errors?.nickname &&
               state.errors.nickname.map((err: string) => (
@@ -75,30 +77,36 @@ export default function Form({ board }: { board: string }) {
                 </p>
               ))}
           </div>
-          <label
-            htmlFor="author-nickname"
-            className="mr-1 font-semibold flex items-center"
-          >
-            닉네임
-          </label>
-          <input
-            name="nickname"
-            id="author-nickname"
-            type="text"
-            className="md:w-[5rem] border-2"
-          />
-          <label
-            htmlFor="author-password"
-            className="mr-1 font-semibold flex items-center ml-1"
-          >
-            비밀번호
-          </label>
-          <input
-            name="password"
-            id="author-password"
-            type="password"
-            className="md:w-[5rem] border-2"
-          />
+          <div className="flex">
+            <div className="md:flex">
+              <label
+                htmlFor="author-nickname"
+                className="mr-1 font-semibold flex items-center"
+              >
+                닉네임
+              </label>
+              <input
+                name="nickname"
+                id="author-nickname"
+                type="text"
+                className="w-[10rem] md:w-[5rem] border-2"
+              />
+            </div>
+            <div className="md:flex">
+              <label
+                htmlFor="author-password"
+                className="mr-1 font-semibold flex items-center ml-1"
+              >
+                비밀번호
+              </label>
+              <input
+                name="password"
+                id="author-password"
+                type="password"
+                className="w-[10rem] md:w-[5rem] border-2"
+              />
+            </div>
+          </div>
         </div>
         {!!lotto645 && (
           <div className="mt-5 flex items-center justify-center">
@@ -158,7 +166,7 @@ function VerifyLotto645({
   });
 
   return (
-    <div className="flex flex-col justify-center items-center bg-white p-10 border-2">
+    <div className="w-[95vw] md:w-auto flex flex-col justify-center items-center bg-white p-2 md:p-10 border-2">
       <p className="text-lg">로또 용지의 QR 코드를 보여주세요.</p>
       <video ref={ref} className="p-2 rounded-3xl" />
     </div>
