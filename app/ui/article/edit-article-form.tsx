@@ -31,18 +31,18 @@ export default function Form({ article }: { article: Article }) {
           else if (res.status === 403) alert("비밀번호가 틀렸습니다.");
         }}
       >
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col items-center justify-center">
           <label htmlFor="password">비밀번호</label>
           <input
             id="password"
             type="password"
             name="password"
-            className="border-2 rounded-md m-2"
+            className="m-2 border-2 rounded-md"
             aria-disabled={pending}
           />
           <button
             type="submit"
-            className="bg-yellow-300 rounded-md px-2 hover:bg-yellow-200"
+            className="px-2 bg-yellow-300 rounded-md hover:bg-yellow-200"
           >
             ✎ 수정
           </button>
@@ -52,9 +52,9 @@ export default function Form({ article }: { article: Article }) {
 
   return (
     <form action={dispatch}>
-      <div className="rouned-md bg-gray-100 p-4">
-        <div className="text-lg flex flex-col">
-          <p className="text-2xl font-semibold mb-2">글 수정</p>
+      <div className="p-4 bg-gray-100 rouned-md w-[95vw] md:w-auto">
+        <div className="flex flex-col text-lg">
+          <p className="mb-2 text-2xl font-semibold">글 수정</p>
           <input type="hidden" name="code" value={article.code} />
           <div className="flex items-center">
             <label htmlFor="article-title" className="mr-2 font-semibold">
@@ -62,7 +62,7 @@ export default function Form({ article }: { article: Article }) {
             </label>
             {state.errors?.title &&
               state.errors.title.map((err: string) => (
-                <p key={err} className="text-red-500 text-sm">
+                <p key={err} className="text-sm text-red-500">
                   {err}&nbsp;
                 </p>
               ))}
@@ -76,49 +76,55 @@ export default function Form({ article }: { article: Article }) {
             placeholder={article.title}
           />
         </div>
-        <div className="flex mt-2">
-          <div className="ml-auto flex items-center">
+        <div className="mt-2 md:flex">
+          <div className="flex items-center ml-auto">
             {state.errors?.nickname &&
               state.errors.nickname.map((err: string) => (
-                <p key={err} className="text-red-500 text-sm">
+                <p key={err} className="text-sm text-red-500">
                   {err}&nbsp;
                 </p>
               ))}
             {(!state.errors?.nickname || state.errors.nickname.length < 1) &&
               state.errors?.password &&
               state.errors.password.map((err: string) => (
-                <p key={err} className="text-red-500 text-sm">
+                <p key={err} className="text-sm text-red-500">
                   {err}&nbsp;
                 </p>
               ))}
           </div>
-          <label
-            htmlFor="author-nickname"
-            className="mr-1 font-semibold flex items-center"
-          >
-            닉네임
-          </label>
-          <input
-            name="nickname"
-            id="author-nickname"
-            type="text"
-            className="md:w-[5rem] border-2"
-            defaultValue={article.author_nickname}
-            placeholder={article.author_nickname}
-          />
-          <label
-            htmlFor="author-password"
-            className="mr-1 font-semibold flex items-center ml-1"
-          >
-            비밀번호
-          </label>
-          <input
-            name="password"
-            id="author-password"
-            type="password"
-            className="md:w-[5rem] border-2"
-            defaultValue={pw}
-          />
+          <div className="flex">
+            <div className="md:flex">
+              <label
+                htmlFor="author-nickname"
+                className="flex items-center mr-1 font-semibold"
+              >
+                닉네임
+              </label>
+              <input
+                name="nickname"
+                id="author-nickname"
+                type="text"
+                className="w-[10rem] md:w-[5rem] border-2"
+                defaultValue={article.author_nickname}
+                placeholder={article.author_nickname}
+              />
+            </div>
+            <div className="md:flex">
+              <label
+                htmlFor="author-password"
+                className="flex items-center ml-1 mr-1 font-semibold"
+              >
+                비밀번호
+              </label>
+              <input
+                name="password"
+                id="author-password"
+                type="password"
+                className="w-[10rem] md:w-[5rem] border-2"
+                defaultValue={pw}
+              />
+            </div>
+          </div>
         </div>
         <div className="mt-5">
           <textarea
@@ -130,14 +136,14 @@ export default function Form({ article }: { article: Article }) {
             placeholder={article.content}
           />
         </div>
-        <div className="flex justify-end items-center">
+        <div className="flex items-center justify-end">
           {state.errors?.content &&
             state.errors.content.map((err: string) => (
-              <p key={err} className="text-red-500 text-sm">
+              <p key={err} className="text-sm text-red-500">
                 {err}&nbsp;
               </p>
             ))}
-          <button className="bg-yellow-200 px-4 py-1 border-2">✎ 수정</button>
+          <button className="px-4 py-1 bg-yellow-200 border-2">✎ 수정</button>
         </div>
       </div>
     </form>
