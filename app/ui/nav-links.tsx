@@ -36,7 +36,6 @@ type SubLink = {
 export default function NavLinks() {
   const pathname = usePathname();
   const currentLink = links.find(({ href }) => pathname.startsWith(href));
-  const mobileOneLinkWidth = Math.floor(100 / links.length);
   return (
     <div className="w-full">
       <div className="flex md:flex-col">
@@ -57,17 +56,17 @@ export default function NavLinks() {
                 )}
               >
                 {LinkIcon && <LinkIcon className="w-6" />}
-                <p className="hidden md:block">{link.name}</p>
+                <p className="md:block">{link.name}</p>
               </Link>
               {pathname.startsWith(link.href) &&
                 link.sublinks.map((sublink) => {
                   const SubLinkIcon = sublink.icon;
                   return (
                     <div
-                      className="hidden md:flex md:flex-row md:items-center md:t-2 mt-2"
+                      className="hidden mt-2 md:flex md:flex-row md:items-center md:t-2"
                       key={sublink.name}
                     >
-                      <div className="bg-gray-100 mx-1 rounded-full w-4 h-4"></div>
+                      <div className="w-4 h-4 mx-1 bg-gray-100 rounded-full"></div>
                       <Link
                         href={sublink.href}
                         className={clsx(
@@ -96,7 +95,7 @@ export default function NavLinks() {
               className="flex flex-row items-center mt-2 md:hidden"
               key={sl.name}
             >
-              <div className="bg-gray-100 mx-1 rounded-full w-4 h-4"></div>
+              <div className="w-4 h-4 mx-1 bg-gray-100 rounded-full"></div>
               <Link
                 href={sl.href}
                 className={clsx(
