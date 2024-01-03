@@ -30,7 +30,7 @@ export default async function ArticleBoard({
 
   return (
     <div className="flex flex-col">
-      <table className="border-collapse w-[70vw] hidden md:block">
+      <table className="border-collapse w-[49rem] hidden md:block">
         <thead>
           <tr className="bg-gray-100">
             <th className="px-2 whitespace-nowrap">제목</th>

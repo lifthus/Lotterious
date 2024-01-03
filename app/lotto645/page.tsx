@@ -13,14 +13,14 @@ export default function Page({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
   return (
-    <main className="flex min-h-screen flex-col items-center">
+    <main className="flex flex-col items-center min-h-screen">
       <Suspense fallback={<LottoDisplaySkeleton />}>
         <LottoDisplay />
       </Suspense>
       <div>
-        <div className="flex mb-1 mt-4 w-full">
+        <div className="flex w-full mt-4 mb-1">
           <Link href="/lotto645/article/create" className="ml-auto">
-            <button className="bg-yellow-300 rounded-md px-2 text-lg border-dashed border-2 hover:bg-yellow-200">
+            <button className="px-2 text-lg bg-yellow-300 border-2 border-dashed rounded-md hover:bg-yellow-200">
               📝글쓰기
             </button>
           </Link>
