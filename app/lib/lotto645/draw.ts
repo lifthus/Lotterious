@@ -1,6 +1,8 @@
 import { pg } from "@/db/pool";
+import { unstable_noStore as NoStore } from "next/cache";
 
 export async function fetchLatestLotto645DrawRaw(): Promise<DrawRaw> {
+  NoStore();
   const res = await pg.query(`
         SELECT * FROM lotto645_raw
         ORDER BY draw_date DESC
