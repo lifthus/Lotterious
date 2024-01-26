@@ -54,13 +54,15 @@ export default function Form({ board }: { board: string }) {
             >
               인증하기
             </button>
-            <Modal isOpen={verifyModalOpen} close={closeVerifyModal}>
-              <VerifyLotto645
-                setLotto645={setLotto645}
-                setQRURL={setQRURL}
-                close={closeVerifyModal}
-              />
-            </Modal>
+            {verifyModalOpen && (
+              <Modal isOpen={verifyModalOpen} close={closeVerifyModal}>
+                <VerifyLotto645
+                  setLotto645={setLotto645}
+                  setQRURL={setQRURL}
+                  close={closeVerifyModal}
+                />
+              </Modal>
+            )}
           </div>
           <div className="ml-auto flex items-center">
             {state.errors?.nickname &&
