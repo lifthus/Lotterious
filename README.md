@@ -7,9 +7,8 @@
 <div align="center">
   
 [Lotterious](https://lotterious.com)
+</div>
 
 - 2024.11.10 배포 중단
-
-</div>
 
 제발..!
